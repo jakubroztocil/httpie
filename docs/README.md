@@ -250,7 +250,7 @@ $ pkg upgrade www/py-httpie
 
 ### Unstable version
 
-If you want to try out the latest version of HTTPie that hasn't been officially released yet, you can install the development or unstable version directly from the master branch on GitHub. However, keep in mind that the development version is a work in progress and may not be as reliable as the stable version.
+If you want to try out the latest version of HTTPie that hasn't been officially released yet, you can install the development or unstable version directly from the `master` branch on GitHub. However, keep in mind that the development version is a work in progress and may not be as reliable as the stable version.
 
 You can use the following command to install the development version of HTTPie on Linux, macOS, Windows, or FreeBSD operating systems. With this command, the code present in the `master` branch is downloaded and installed using `pip`.
 
@@ -367,44 +367,47 @@ $ http localhost:8000 Host:example.com
 
 ## HTTP method
 
-The name of the HTTP method comes right before the URL argument:
+HTTP methods determine the action to be performed when interacting with a web server. In HTTPie, the HTTP method is specified before the URL. It can be any of the standard HTTP methods (`GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `CONNECT`, `TRACE`, `PATCH` & `OPTIONS`) or a custom one.
+
+The following command shows how to make a request with `DELETE` method to URL `pie.dev/delete`:
 
 ```bash
 $ http DELETE pie.dev/delete
 ```
 
-Which looks similar to the actual `Request-Line` that is sent:
+This resembles to the actual `Request-Line` that is sent:
 
 ```http
 DELETE /delete HTTP/1.1
 ```
 
-In addition to the standard methods (`GET`, `POST`, `HEAD`, `PUT`, `PATCH`, `DELETE`, etc.), you can use custom method names, for example:
+The following command shows how to use a custom HTTP method `AHOY`:
 
 ```bash
 $ http AHOY pie.dev/post
 ```
 
-There are no restrictions regarding which request methods can include a body. You can send an empty `POST` request:
+HTTPie does not place any restrictions regarding which request methods can include a body.
+For instance, you can make an empty `POST` request as shown below:
 
 ```bash
 $ http POST pie.dev/post
 ```
 
-You can also make `GET` requests containing a body:
+You can also make a `GET` request with body. Here is an example of this:
 
 ```bash
 $ http GET pie.dev/get hello=world
 ```
 
-### Optional `GET` and `POST`
+### Defaults for the method argument
 
-The `METHOD` argument is optional, and when you don’t specify it, HTTPie defaults to:
+Specifying the method argument is optional. If not specified, it defaults to:
 
 - `GET` for requests without body
 - `POST` for requests with body
 
-Here we don’t specify any request data, so both commands will send the same `GET` request:
+This means that the following commands are equivalent:
 
 ```bash
 $ http GET pie.dev/get
@@ -414,7 +417,10 @@ $ http GET pie.dev/get
 $ http pie.dev/get
 ```
 
-Here, on the other hand, we do have some data, so both commands will make the same `POST` request:
+In the last command, the method defaults to `GET`, since the request does not contain a body.
+
+Similarly, the following commands are equivalent:
+
 
 ```bash
 $ http POST pie.dev/post hello=world
@@ -424,25 +430,29 @@ $ http POST pie.dev/post hello=world
 $ http pie.dev/post hello=world
 ```
 
+In the last command, the method defaults to `POST`, since the request contains a body.
+
 ## Request URL
 
-The only information HTTPie needs to perform a request is a URL.
+The request URL is a unique web address to which a request is sent. This argument is required to initiate a request. All other arguments can be omitted, in which case HTTPie uses default values.
 
-The default scheme is `http://` and can be omitted from the argument:
+Specifying the scheme (`http://` or `https://`) is optional as well. If not specified, HTTPie defaults to using `http://`.
 
 ```bash
 $ http example.org
 # → http://example.org
 ```
 
-HTTPie also installs an `https` executable, where the default scheme is `https://`:
+HTTPie includes an `https` executable specifically designed to handle HTTPS requests. To use this, simply replace `http` with `https` in your command. When `https` is used to initiate a request, the default scheme is `https://`.
 
 ```bash
 $ https example.org
 # → https://example.org
 ```
 
-When you paste a URL into the terminal, you can even keep the `://` bit in the URL argument to quickly convert the URL into an HTTPie call just by adding a space after the protocol name.
+HTTPie provides a handy feature that enables conversion of a URL into an HTTPie command. This can be useful when you need to convert a URL from clipboard to an HTTPie command. To use this feature, paste a URL into a terminal window, making sure to include a space after the protocol name. HTTPie will do the needful (like ignoring `://`) and process the input as an HTTPie command.
+
+The following examples illustrate this feature:
 
 ```bash
 $ https ://example.org
