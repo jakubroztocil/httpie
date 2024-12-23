@@ -811,6 +811,7 @@ ssl = options.add_group('SSL')
 
 ssl.add_argument(
     '--verify',
+    dest='verify',
     default='yes',
     short_help='If "no", skip SSL verification. If a file path, use it as a CA bundle.',
     help="""
@@ -818,6 +819,16 @@ ssl.add_argument(
     Defaults to "yes" ("true"). You can also pass the path to a CA_BUNDLE file
     for private certs. (Or you can set the REQUESTS_CA_BUNDLE environment
     variable instead.)
+    """,
+)
+ssl.add_argument(
+    '-k',
+    dest='verify',
+    default='no',
+    short_help='Shortcut for "--verify=no" skipping SSL verification',
+    help="""
+    Shortcut for "--verify=no" which skips verification of the host's
+    SSL certificate. See the '--verify' flag help for further information.
     """,
 )
 ssl.add_argument(
