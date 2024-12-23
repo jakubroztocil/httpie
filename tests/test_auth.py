@@ -153,3 +153,10 @@ def test_ignore_netrc_null_auth():
         env=MockEnvironment(),
     )
     assert isinstance(args.auth, ExplicitNullAuth)
+
+
+@pytest.mark.parametrize('argument_name', ['--auth-type', '-A'])
+def test_digest_auth_auth_header(httpbin_both, argument_name):
+    r = http(argument_name + '=digest', '--auth=user:password',
+             'GET', httpbin_both.url + '/digest-auth/auth/user/password', '-v')
+    assert 'Authorization: Digest username="user", realm="me@kennethreitz.com"' in r

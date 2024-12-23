@@ -208,6 +208,7 @@ def program(args: argparse.Namespace, env: Environment) -> ExitStatus:
                                     request_body_read_callback=request_body_read_callback)
         force_separator = False
         prev_with_body = False
+        request_message = None
 
         # Process messages as they’re generated
         for message in messages:
@@ -231,14 +232,37 @@ def program(args: argparse.Namespace, env: Environment) -> ExitStatus:
                     exit_status = http_status_to_exit_status(http_status=message.status_code, follow=args.follow)
                     if exit_status != ExitStatus.SUCCESS and (not env.stdout_isatty or args.quiet == 1):
                         env.log_error(f'HTTP {message.raw.status} {message.raw.reason}', level=LogLevel.WARNING)
-            write_message(
-                requests_message=message,
-                env=env,
-                output_options=output_options._replace(
-                    body=do_write_body
-                ),
-                processing_options=processing_options
-            )
+            if args.auth_type == 'digest':
+                if isinstance(message, requests.models.PreparedRequest):
+                    request_message = message
+                    request_output_options = output_options._replace(body=do_write_body)
+                elif isinstance(message, requests.models.Response):
+                    request_message.headers = message.request.headers
+                    write_message(
+                        requests_message=request_message,
+                        env=env,
+                        output_options=request_output_options,
+                        processing_options=processing_options
+                    )
+                    write_message(
+                        requests_message=message,
+                        env=env,
+                        output_options=output_options._replace(
+                            body=do_write_body
+                        ),
+                        processing_options=processing_options
+                    )
+                else:
+                    continue
+            else:
+                write_message(
+                    requests_message=message,
+                    env=env,
+                    output_options=output_options._replace(
+                        body=do_write_body
+                    ),
+                    processing_options=processing_options
+                )
             prev_with_body = output_options.body
 
         # Cleanup
