@@ -167,11 +167,14 @@ def get_expired_cookies(
         split_cookies(cookies)
     )
 
-    cookies = [
+    # Use a dict to keep only the last value for each cookie, so that an early
+    # expiration doesn't prevent a later setting in the same headers.
+    cookies = {
         # The first attr name is the cookie name.
-        dict(attrs[1:], name=attrs[0][0])
+        attrs[0][0]: dict(attrs[1:], name=attrs[0][0])
         for attrs in attr_sets
-    ]
+    }
+    cookies = list(cookies.values())
 
     _max_age_to_expires(cookies=cookies, now=now)
 

@@ -437,6 +437,15 @@ class TestExpiredCookies(CookieTestBase):
                 datetime(2020, 6, 11).timestamp(),
                 []
             ),
+            (
+                # Don't expire cookie with later setting.
+                (
+                    'session=; Path=/; Expires=Thu, 01-Jan-1970 00:00:00 GMT; secure; HttpOnly, '
+                    'session=bar; Path=/; secure; HttpOnly'
+                ),
+                None,
+                []
+            )
         ]
     )
     def test_get_expired_cookies_manages_multiple_cookie_headers(self, cookies, now, expected_expired):
