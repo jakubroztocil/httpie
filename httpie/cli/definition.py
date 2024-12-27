@@ -53,24 +53,6 @@ positional_arguments = options.add_group(
     Only URL is required.
     """,
 )
-
-positional_arguments.add_argument(
-    dest='method',
-    metavar='METHOD',
-    nargs=Qualifiers.OPTIONAL,
-    default=None,
-    short_help='The HTTP method to be used for the request (GET, POST, PUT, DELETE, ...).',
-    help="""
-    The HTTP method to be used for the request (GET, POST, PUT, DELETE, ...).
-
-    This argument can be omitted in which case HTTPie will use POST if there
-    is some data to be sent, otherwise GET:
-
-        $ http example.org               # => GET
-        $ http example.org hello=world   # => POST
-
-    """,
-)
 positional_arguments.add_argument(
     dest='url',
     metavar='URL',
@@ -83,6 +65,8 @@ positional_arguments.add_argument(
 
         $ http :3000                    # => http://localhost:3000
         $ http :/foo                    # => http://localhost/foo
+
+    Prefixed with --base-url before default scheme or shorthand processing take place.
 
     """,
 )
@@ -706,10 +690,37 @@ authentication.add_argument(
 network = options.add_group('Network')
 
 network.add_argument(
+    '--method',
+    '-X',
+    metavar='METHOD',
+    default=None,
+    short_help='The HTTP method to be used for the request (GET, POST, PUT, DELETE, ...).',
+    help="""
+    The HTTP method to be used for the request (GET, POST, PUT, DELETE, ...).
+
+    This argument can be omitted in which case HTTPie will use POST if there
+    is some data to be sent, otherwise GET:
+
+        $ http example.org               # => GET
+        $ http example.org hello=world   # => POST
+
+    """,
+)
+network.add_argument(
     '--offline',
     default=False,
     action='store_true',
     short_help='Build the request and print it but don’t actually send it.'
+)
+network.add_argument(
+    '--base-url',
+    default='',
+    short_help='String to prepend to the request URL.',
+    help="""
+    String to prepend to the request URL before --default-scheme and/or localhost
+    shorthand are processed. If specified multiple times, last value is used.
+
+    """
 )
 network.add_argument(
     '--proxy',

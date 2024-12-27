@@ -375,3 +375,8 @@ class TestSchemes:
     def test_scheme_when_invoked_as_https(self, httpbin_secure):
         url = f'{httpbin_secure.host}:{httpbin_secure.port}'
         assert HTTP_OK in http(url, program_name='https')
+
+
+class TestBaseUrl:
+    def test_base_url(self):
+        assert False, 'Needs tests'
