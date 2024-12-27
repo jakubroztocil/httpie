@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from itertools import chain
-from typing import Callable, Iterable, Optional, Union
+from typing import Callable, Iterable, List, Optional, Union
 
 from .processing import Conversion, Formatting
 from ..context import Environment
@@ -223,9 +223,164 @@ class PrettyStream(EncodedStream):
             chunk = self.decode_chunk(chunk)
         chunk = self.formatting.format_body(content=chunk, mime=self.mime)
         return smart_encode(chunk, self.output_encoding)
+    
+class FilterStream(EncodedStream):
+
+    CHUNK_SIZE = 1
+
+    def __init__(
+        self, 
+        conversion: Conversion,
+        filter: List['str'],
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.filters = filter
+        self.conversion = conversion
+
+    def get_headers(self) -> bytes:
+        return self.msg.headers.encode(self.output_encoding)
+            
+
+    def get_metadata(self) -> bytes:
+        return self.msg.metadata.encode(self.output_encoding)
+            
+
+    def iter_body(self) -> Iterable[bytes]:
+        first_chunk = True
+        iter_lines = self.msg.iter_lines(self.CHUNK_SIZE)
+        for line, lf in iter_lines:
+            if b'\0' in line:
+                if first_chunk:
+                    converter = self.conversion.get_converter(self.mime)
+                    if converter:
+                        body = bytearray()
+                        # noinspection PyAssignmentToLoopOrWithParameter
+                        for line, lf in chain([(line, lf)], iter_lines):
+                            body.extend(line)
+                            body.extend(lf)
+                        assert isinstance(body, str)
+                        yield self.process_body(body)
+                        return
+                raise BinarySuppressedError()
+            yield self.process_body(line) + lf
+            first_chunk = False
+
+    def process_body(self, chunk: Union[str, bytes]) -> bytes:
+        if not isinstance(chunk, str):
+            # Text when a converter has been used,
+            # otherwise it will always be bytes.
+            chunk = self.decode_chunk(chunk)
+        chunk_dict = eval(chunk)
+        for word in self.filters:
+            temp_dict = chunk_dict
+            splitwords = word.split(".")
+            for i in range(len(splitwords)-1):
+                subword = splitwords[i]
+                if subword in temp_dict:
+                    temp_dict = temp_dict[subword]
+                else:
+                    break
+            else:
+                subword = splitwords[-1]
+                if subword in temp_dict:
+                    del temp_dict[subword]
+        chunk = f'{chunk_dict}'
+        return smart_encode(chunk, self.output_encoding)
+    
+
+class PrettyFilterStream(PrettyStream):
+
+    CHUNK_SIZE = 1
+
+    def __init__(
+        self, 
+        conversion: Conversion,
+        formatting: Formatting,
+        filter: List['str'],
+        **kwargs,
+    ):
+        super().__init__(conversion=conversion, formatting=formatting, **kwargs)
+        self.filters = filter
+
+    def process_body(self, chunk: Union[str, bytes]) -> bytes:
+        if not isinstance(chunk, str):
+            # Text when a converter has been used,
+            # otherwise it will always be bytes.
+            chunk = self.decode_chunk(chunk)
+        chunk_dict = eval(chunk)
+        for word in self.filters:
+            temp_dict = chunk_dict
+            splitwords = word.split(".")
+            for i in range(len(splitwords)-1):
+                subword = splitwords[i]
+                if subword in temp_dict:
+                    temp_dict = temp_dict[subword]
+                else:
+                    break
+            else:
+                subword = splitwords[-1]
+                if subword in temp_dict:
+                    del temp_dict[subword]
+        chunk = (f'{chunk_dict}').replace(" ", "").replace("'", '"')
+        chunk = self.formatting.format_body(content=chunk, mime=self.mime)
+        return smart_encode(chunk, self.output_encoding)
+
 
 
 class BufferedPrettyStream(PrettyStream):
+    """The same as :class:`PrettyStream` except that the body is fully
+    fetched before it's processed.
+
+    Suitable regular HTTP responses.
+
+    """
+
+    CHUNK_SIZE = 1024 * 10
+
+    def iter_body(self) -> Iterable[bytes]:
+        # Read the whole body before prettifying it,
+        # but bail out immediately if the body is binary.
+        converter = None
+        body = bytearray()
+
+        for chunk in self.msg.iter_body(self.CHUNK_SIZE):
+            if not converter and b'\0' in chunk:
+                converter = self.conversion.get_converter(self.mime)
+                if not converter:
+                    raise BinarySuppressedError()
+            body.extend(chunk)
+
+        if converter:
+            self.mime, body = converter.convert(body)
+
+        yield self.process_body(body)
+
+
+class PrettyBufferedFilterStream(PrettyFilterStream):
+
+    CHUNK_SIZE = 1024 * 10
+
+    def iter_body(self) -> Iterable[bytes]:
+        # Read the whole body before prettifying it,
+        # but bail out immediately if the body is binary.
+        converter = None
+        body = bytearray()
+
+        for chunk in self.msg.iter_body(self.CHUNK_SIZE):
+            if not converter and b'\0' in chunk:
+                converter = self.conversion.get_converter(self.mime)
+                if not converter:
+                    raise BinarySuppressedError()
+            body.extend(chunk)
+
+        if converter:
+            self.mime, body = converter.convert(body)
+
+        yield self.process_body(body)
+
+
+class BufferedFilterStream(FilterStream):
     """The same as :class:`PrettyStream` except that the body is fully
     fetched before it's processed.
 

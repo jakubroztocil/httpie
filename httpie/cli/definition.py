@@ -13,6 +13,7 @@ from httpie.cli.constants import (BASE_OUTPUT_OPTIONS, DEFAULT_FORMAT_OPTIONS,
                                   OUT_RESP_HEAD, OUT_RESP_META, OUTPUT_OPTIONS,
                                   OUTPUT_OPTIONS_DEFAULT, PRETTY_MAP,
                                   PRETTY_STDOUT_TTY_ONLY,
+                                  FILTER_STDOUT_TTY_ONLY,
                                   SEPARATOR_GROUP_ALL_ITEMS, SEPARATOR_PROXY,
                                   SORTED_FORMAT_OPTIONS_STRING,
                                   UNSORTED_FORMAT_OPTIONS_STRING, RequestType)
@@ -303,6 +304,20 @@ output_processing.add_argument(
 
     """,
 )
+
+output_processing.add_argument(
+    '--filter-keys',
+    dest='filtery',
+    default=FILTER_STDOUT_TTY_ONLY,
+    # choices=sorted(PRETTY_MAP.keys()),
+    short_help='Control the processing of console outputs.',
+    help="""
+    Controls output processing. Filters the comma separated
+    key values in the output json
+
+    """,
+)
+
 output_processing.add_argument(
     '--style',
     '-s',

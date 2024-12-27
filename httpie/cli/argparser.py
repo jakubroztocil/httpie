@@ -18,7 +18,7 @@ from .argtypes import (
 from .constants import (
     HTTP_GET, HTTP_POST, BASE_OUTPUT_OPTIONS, OUTPUT_OPTIONS, OUTPUT_OPTIONS_DEFAULT,
     OUTPUT_OPTIONS_DEFAULT_OFFLINE, OUTPUT_OPTIONS_DEFAULT_STDOUT_REDIRECTED,
-    OUT_RESP_BODY, PRETTY_MAP, PRETTY_STDOUT_TTY_ONLY, RequestType,
+    OUT_RESP_BODY, PRETTY_MAP, PRETTY_STDOUT_TTY_ONLY, FILTER_STDOUT_TTY_ONLY, RequestType,
     SEPARATOR_CREDENTIALS,
     SEPARATOR_GROUP_ALL_ITEMS, SEPARATOR_GROUP_DATA_ITEMS, URL_SCHEME_RE,
 )
@@ -172,6 +172,7 @@ class HTTPieArgumentParser(BaseHTTPieArgumentParser):
         self._setup_standard_streams()
         self._process_output_options()
         self._process_pretty_options()
+        self._process_filter_options()
         self._process_format_options()
         self._guess_method()
         self._parse_items()
@@ -538,6 +539,16 @@ class HTTPieArgumentParser(BaseHTTPieArgumentParser):
         else:
             # noinspection PyTypeChecker
             self.args.prettify = PRETTY_MAP[self.args.prettify]
+
+    def _process_filter_options(self):
+        if self.args.filtery == FILTER_STDOUT_TTY_ONLY:
+            pass
+        elif (self.args.filtery and self.env.is_windows
+              and self.args.output_file):
+            self.error('Only terminal output can be colorized on Windows.')
+        else:
+            # noinspection PyTypeChecker
+            pass
 
     def _process_download_options(self):
         if self.args.offline:

@@ -15,7 +15,15 @@ from ..models import (
 from .models import ProcessingOptions
 from .processing import Conversion, Formatting
 from .streams import (
-    BaseStream, BufferedPrettyStream, EncodedStream, PrettyStream, RawStream,
+    BaseStream,
+    BufferedPrettyStream,
+    EncodedStream,
+    PrettyStream,
+    RawStream,
+    FilterStream,
+    PrettyFilterStream,
+    PrettyBufferedFilterStream,
+    BufferedFilterStream,
 )
 from ..utils import parse_content_type_header
 
@@ -161,6 +169,7 @@ def get_stream_type_and_kwargs(
     """
     is_stream = processing_options.stream
     prettify_groups = processing_options.get_prettify(env)
+    filtery_groups = processing_options.get_filtery(env)
     if not is_stream and message_type is HTTPResponse:
         # If this is a response, then check the headers for determining
         # auto-streaming.
@@ -200,5 +209,15 @@ def get_stream_type_and_kwargs(
                     format_options=processing_options.format_options,
                 )
             })
+
+        if filtery_groups:
+            stream_class = FilterStream if is_stream else BufferedFilterStream
+            stream_kwargs.update({
+                'conversion': Conversion(),
+                'filter': filtery_groups
+            })
+
+        if prettify_groups and filtery_groups:
+            stream_class = PrettyFilterStream if is_stream else PrettyBufferedFilterStream
 
     return stream_class, stream_kwargs

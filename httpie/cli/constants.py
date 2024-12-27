@@ -105,6 +105,13 @@ PRETTY_MAP = {
 }
 PRETTY_STDOUT_TTY_ONLY = PrettyOptions.STDOUT_TTY_ONLY
 
+# FILTER
+
+class FilterOptions(enum.Enum):
+    STDOUT_TTY_ONLY = enum.auto()
+
+FILTER_STDOUT_TTY_ONLY = FilterOptions.STDOUT_TTY_ONLY
+
 
 DEFAULT_FORMAT_OPTIONS = [
     'headers.sort:true',
