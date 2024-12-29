@@ -205,7 +205,6 @@ class BaseCLIResponse:
     devnull: str = None
     json: dict = None
     exit_status: ExitStatus = None
-    command: str = None
     args: List[str] = []
     complete_args: List[str] = []
 

@@ -18,7 +18,7 @@ This documentation is best viewed at [httpie.io/docs](https://httpie.org/docs).
 
 You can select your corresponding HTTPie version as well as run examples directly from the browser using a [termible.io](https://termible.io?utm_source=httpie-readme) embedded terminal.
 
-If you are reading this on GitHub, then this text covers the current *development* version.
+If you are reading this on GitHub, then this text covers the current _development_ version.
 You are invited to submit fixes and improvements to the docs by editing [this file](https://github.com/httpie/cli/blob/master/docs/README.md).
 
 </div>
@@ -255,7 +255,7 @@ If you want to try out the latest version of HTTPie that hasn't been officially 
 You can use the following command to install the development version of HTTPie on Linux, macOS, Windows, or FreeBSD operating systems. With this command, the code present in the `master` branch is downloaded and installed using `pip`.
 
 ```bash
-$ python -m pip install --upgrade https://github.com/httpie/cli/archive/master.tar.gz
+python -m pip install --upgrade https://github.com/httpie/cli/archive/master.tar.gz
 ```
 
 There are other ways to install the development version of HTTPie on macOS and Linux.
@@ -263,15 +263,15 @@ There are other ways to install the development version of HTTPie on macOS and L
 You can install it using Homebrew by running the following commands:
 
 ```bash
-$ brew uninstall --force httpie
-$ brew install --HEAD httpie
+brew uninstall --force httpie
+brew install --HEAD httpie
 ```
 
 You can install it using Snapcraft by running the following commands:
 
 ```bash
-$ snap remove httpie
-$ snap install httpie --edge
+snap remove httpie
+snap install httpie --edge
 ```
 
 To verify the installation, you can compare the [version identifier on GitHub](https://github.com/httpie/cli/blob/master/httpie/__init__.py#L6) with the one available on your machine. You can check the version of HTTPie on your machine by using the command `http --version`.
@@ -288,13 +288,13 @@ Note that on your machine, the version name will have the `.dev0` suffix.
 Hello World:
 
 ```bash
-$ https httpie.io/hello
+https httpie.io/hello
 ```
 
 Synopsis:
 
 ```bash
-$ http [flags] [METHOD] URL [ITEM [ITEM]]
+http [flags] [METHOD] URL [ITEM [ITEM]]
 ```
 
 See also `http --help` (and for systems where man pages are available, you can use `man http`).
@@ -304,65 +304,65 @@ See also `http --help` (and for systems where man pages are available, you can u
 Custom [HTTP method](#http-method), [HTTP headers](#http-headers) and [JSON](#json) data:
 
 ```bash
-$ http PUT pie.dev/put X-API-Token:123 name=John
+http PUT pie.dev/put X-API-Token:123 name=John
 ```
 
 Submitting [forms](#forms):
 
 ```bash
-$ http -f POST pie.dev/post hello=World
+http -f POST pie.dev/post hello=World
 ```
 
 See the request that is being sent using one of the [output options](#output-options):
 
 ```bash
-$ http -v pie.dev/get
+http -v pie.dev/get
 ```
 
 Build and print a request without sending it using [offline mode](#offline-mode):
 
 ```bash
-$ http --offline pie.dev/post hello=offline
+http --offline pie.dev/post hello=offline
 ```
 
 Use [GitHub API](https://developer.github.com/v3/issues/comments/#create-a-comment) to post a comment on an [issue](https://github.com/httpie/cli/issues/83) with [authentication](#authentication):
 
 ```bash
-$ http -a USERNAME POST https://api.github.com/repos/httpie/cli/issues/83/comments body='HTTPie is awesome! :heart:'
+http -a USERNAME POST https://api.github.com/repos/httpie/cli/issues/83/comments body='HTTPie is awesome! :heart:'
 ```
 
 Upload a file using [redirected input](#redirected-input):
 
 ```bash
-$ http pie.dev/post < files/data.json
+http pie.dev/post < files/data.json
 ```
 
 Download a file and save it via [redirected output](#redirected-output):
 
 ```bash
-$ http pie.dev/image/png > image.png
+http pie.dev/image/png > image.png
 ```
 
 Download a file `wget` style:
 
 ```bash
-$ http --download pie.dev/image/png
+http --download pie.dev/image/png
 ```
 
 Use named [sessions](#sessions) to make certain aspects of the communication persistent between requests to the same host:
 
 ```bash
-$ http --session=logged-in -a username:password pie.dev/get API-Key:123
+http --session=logged-in -a username:password pie.dev/get API-Key:123
 ```
 
 ```bash
-$ http --session=logged-in pie.dev/headers
+http --session=logged-in pie.dev/headers
 ```
 
 Set a custom `Host` header to work around missing DNS records:
 
 ```bash
-$ http localhost:8000 Host:example.com
+http localhost:8000 Host:example.com
 ```
 
 ## HTTP method
@@ -370,7 +370,7 @@ $ http localhost:8000 Host:example.com
 The name of the HTTP method comes right before the URL argument:
 
 ```bash
-$ http DELETE pie.dev/delete
+http DELETE pie.dev/delete
 ```
 
 Which looks similar to the actual `Request-Line` that is sent:
@@ -382,19 +382,19 @@ DELETE /delete HTTP/1.1
 In addition to the standard methods (`GET`, `POST`, `HEAD`, `PUT`, `PATCH`, `DELETE`, etc.), you can use custom method names, for example:
 
 ```bash
-$ http AHOY pie.dev/post
+http AHOY pie.dev/post
 ```
 
 There are no restrictions regarding which request methods can include a body. You can send an empty `POST` request:
 
 ```bash
-$ http POST pie.dev/post
+http POST pie.dev/post
 ```
 
 You can also make `GET` requests containing a body:
 
 ```bash
-$ http GET pie.dev/get hello=world
+http GET pie.dev/get hello=world
 ```
 
 ### Optional `GET` and `POST`
@@ -407,21 +407,21 @@ The `METHOD` argument is optional, and when you don’t specify it, HTTPie defau
 Here we don’t specify any request data, so both commands will send the same `GET` request:
 
 ```bash
-$ http GET pie.dev/get
+http GET pie.dev/get
 ```
 
 ```bash
-$ http pie.dev/get
+http pie.dev/get
 ```
 
 Here, on the other hand, we do have some data, so both commands will make the same `POST` request:
 
 ```bash
-$ http POST pie.dev/post hello=world
+http POST pie.dev/post hello=world
 ```
 
 ```bash
-$ http pie.dev/post hello=world
+http pie.dev/post hello=world
 ```
 
 ## Request URL
@@ -461,7 +461,7 @@ If you find yourself manually constructing URLs with querystring parameters on t
 With that, you don’t have to worry about escaping the `&` separators for your shell. Additionally, any special characters in the parameter name or value get automatically URL-escaped (as opposed to the parameters specified in the full URL, which HTTPie doesn’t modify).
 
 ```bash
-$ http https://api.github.com/search/repositories q==httpie per_page==1
+http https://api.github.com/search/repositories q==httpie per_page==1
 ```
 
 ```http
@@ -471,7 +471,7 @@ GET /search/repositories?q=httpie&per_page=1 HTTP/1.1
 You can even retrieve the `value` from a file by using the `param==@file` syntax. This would also effectively strip the newlines from the end. See [file based separators](#file-based-separators) for more examples.
 
 ```bash
-$ http pie.dev/get text==@files/text.txt
+http pie.dev/get text==@files/text.txt
 ```
 
 ### URL shortcuts for `localhost`
@@ -481,7 +481,7 @@ This means that, for example, `:3000` would expand to `http://localhost:3000`.
 If the port is omitted, then port 80 is assumed.
 
 ```bash
-$ http :/foo
+http :/foo
 ```
 
 ```http
@@ -490,7 +490,7 @@ Host: localhost
 ```
 
 ```bash
-$ http :3000/bar
+http :3000/bar
 ```
 
 ```http
@@ -499,7 +499,7 @@ Host: localhost:3000
 ```
 
 ```bash
-$ http :
+http :
 ```
 
 ```http
@@ -533,7 +533,7 @@ $ http-unix %2Fvar%2Frun%2Fdocker.sock/info
 The standard behavior of HTTP clients is to normalize the path portion of URLs by squashing dot segments as a typical filesystem would:
 
 ```bash
-$ http -v example.org/./../../etc/password
+http -v example.org/./../../etc/password
 ```
 
 ```http
@@ -543,7 +543,7 @@ GET /etc/password HTTP/1.1
 The `--path-as-is` option allows you to disable this behavior:
 
 ```bash
-$ http --path-as-is -v example.org/./../../etc/password
+http --path-as-is -v example.org/./../../etc/password
 ```
 
 ```http
@@ -552,12 +552,12 @@ GET /../../etc/password HTTP/1.1
 
 ## Request items
 
-There are a few different *request item* types that provide a convenient
+There are a few different _request item_ types that provide a convenient
 mechanism for specifying HTTP headers, JSON and form data, files,
 and URL parameters. This is a very practical way of constructing
 HTTP requests from scratch on the CLI.
 
-Each *request item* is simply a key/value pair separated with the following
+Each _request item_ is simply a key/value pair separated with the following
 characters: `:` (headers), `=` (data field, e.g., JSON, form), `:=` (raw data field)
 `==` (query parameters), `@` (file upload).
 
@@ -603,7 +603,7 @@ Often it is necessary to quote the values, e.g. `foo='bar baz'`.
 If any of the field names or headers starts with a minus (e.g. `-fieldname`), you need to place all such items after the special token `--` to prevent confusion with `--arguments`:
 
 ```bash
-$ http pie.dev/post -- -name-starting-with-dash=foo -Unusual-Header:bar
+http pie.dev/post -- -name-starting-with-dash=foo -Unusual-Header:bar
 ```
 
 ```http
@@ -618,12 +618,12 @@ Content-Type: application/json
 
 ## JSON
 
-JSON is the *lingua franca* of modern web services, and it is also the **implicit content type** HTTPie uses by default.
+JSON is the _lingua franca_ of modern web services, and it is also the **implicit content type** HTTPie uses by default.
 
 Simple example:
 
 ```bash
-$ http PUT pie.dev/put name=John email=john@example.org
+http PUT pie.dev/put name=John email=john@example.org
 ```
 
 ```http
@@ -1034,11 +1034,11 @@ $ http --offline --print=B pie.dev/post \
 For very complex JSON structures, it may be more convenient to [pass it as raw request body](#raw-request-body), for example:
 
 ```bash
-$ echo -n '{"hello": "world"}' | http POST pie.dev/post
+echo -n '{"hello": "world"}' | http POST pie.dev/post
 ```
 
 ```bash
-$ http POST pie.dev/post < files/data.json
+http POST pie.dev/post < files/data.json
 ```
 
 ## Forms
@@ -1050,7 +1050,7 @@ It is possible to make form data the implicit content type instead of JSON via t
 ### Regular forms
 
 ```bash
-$ http --form POST pie.dev/post name='John Smith'
+http --form POST pie.dev/post name='John Smith'
 ```
 
 ```http
@@ -1065,7 +1065,7 @@ name=John+Smith
 If one or more file fields is present, the serialization and content type is `multipart/form-data`:
 
 ```bash
-$ http -f POST pie.dev/post name='John Smith' cv@~/files/data.xml
+http -f POST pie.dev/post name='John Smith' cv@~/files/data.xml
 ```
 
 The request above is the same as if the following HTML form were submitted:
@@ -1082,13 +1082,13 @@ Please note that `@` is used to simulate a file upload form field, whereas `=@` 
 When uploading files, their content type is inferred from the file name. You can manually override the inferred content type:
 
 ```bash
-$ http -f POST pie.dev/post name='John Smith' cv@'~/files/data.bin;type=application/pdf'
+http -f POST pie.dev/post name='John Smith' cv@'~/files/data.bin;type=application/pdf'
 ```
 
 To perform a `multipart/form-data` request even without any files, use `--multipart` instead of `--form`:
 
 ```bash
-$ http --multipart --offline example.org hello=world
+http --multipart --offline example.org hello=world
 ```
 
 ```http
@@ -1109,7 +1109,7 @@ File uploads are always streamed to avoid memory issues with large files.
 By default, HTTPie uses a random unique string as the multipart boundary, but you can use `--boundary` to specify a custom string instead:
 
 ```bash
-$ http --form --multipart --boundary=xoxo --offline example.org hello=world
+http --form --multipart --boundary=xoxo --offline example.org hello=world
 ```
 
 ```http
@@ -1128,7 +1128,7 @@ world
 If you specify a custom `Content-Type` header without including the boundary bit, HTTPie will add the boundary value (explicitly specified or auto-generated) to the header automatically:
 
 ```bash
-$ http --form --multipart --offline example.org hello=world Content-Type:multipart/letter
+http --form --multipart --offline example.org hello=world Content-Type:multipart/letter
 ```
 
 ```http
@@ -1183,7 +1183,7 @@ All of these can be overwritten or unset (see below).
 You can read headers from a file by using the `:@` operator. This would also effectively strip the newlines from the end. See [file based separators](#file-based-separators) for more examples.
 
 ```bash
-$ http pie.dev/headers X-Data:@files/text.txt
+http pie.dev/headers X-Data:@files/text.txt
 ```
 
 ### Empty headers and header un-setting
@@ -1191,13 +1191,13 @@ $ http pie.dev/headers X-Data:@files/text.txt
 To unset a previously specified header (such a one of the default headers), use `Header:`:
 
 ```bash
-$ http pie.dev/headers Accept: User-Agent:
+http pie.dev/headers Accept: User-Agent:
 ```
 
 To send a header with an empty value, use `Header;`, with a semicolon:
 
 ```bash
-$ http pie.dev/headers 'Header;'
+http pie.dev/headers 'Header;'
 ```
 
 Please note that some internal headers, such as `Content-Length`, can’t be unset if
@@ -1238,7 +1238,7 @@ by individual commands when sending a request instead of being joined together.
 The `--max-headers=n` option allows you to control the number of headers HTTPie reads before giving up (the default `0`, i.e., there’s no limit).
 
 ```bash
-$ http --max-headers=100 pie.dev/get
+http --max-headers=100 pie.dev/get
 ```
 
 ## Offline mode
@@ -1249,11 +1249,11 @@ With `--offline`, HTTPie builds a request based on the specified options and arg
 Generating API documentation examples that you can copy & paste without sending a request:
 
 ```bash
-$ http --offline POST server.chess/api/games API-Key:ZZZ w=magnus b=hikaru t=180 i=2
+http --offline POST server.chess/api/games API-Key:ZZZ w=magnus b=hikaru t=180 i=2
 ```
 
 ```bash
-$ http --offline MOVE server.chess/api/games/123 API-Key:ZZZ p=b a=R1a3 t=77
+http --offline MOVE server.chess/api/games/123 API-Key:ZZZ p=b a=R1a3 t=77
 ```
 
 Generating raw requests that can be sent with any other client:
@@ -1282,7 +1282,7 @@ That means, HTTPie does not offer any special syntax for specifying cookies — 
 Send a single cookie:
 
 ```bash
-$ http pie.dev/cookies Cookie:sessionid=foo
+http pie.dev/cookies Cookie:sessionid=foo
 ```
 
 ```http
@@ -1298,7 +1298,7 @@ User-Agent: HTTPie/0.9.9
 Send multiple cookies (note: the header is quoted to prevent the shell from interpreting the `;`):
 
 ```bash
-$ http pie.dev/cookies 'Cookie:sessionid=foo;another-cookie=bar'
+http pie.dev/cookies 'Cookie:sessionid=foo;another-cookie=bar'
 ```
 
 ```http
@@ -1326,13 +1326,13 @@ The currently supported authentication schemes are Basic and Digest (see [auth p
 ### Basic auth
 
 ```bash
-$ http -a username:password pie.dev/basic-auth/username/password
+http -a username:password pie.dev/basic-auth/username/password
 ```
 
 ### Digest auth
 
 ```bash
-$ http -A digest -a username:password pie.dev/digest-auth/httpie/username/password
+http -A digest -a username:password pie.dev/digest-auth/httpie/username/password
 ```
 
 ### Bearer auth
@@ -1346,7 +1346,7 @@ https -A bearer -a token pie.dev/bearer
 If you omit the password part of `--auth, -a`, HTTPie securely prompts you for it:
 
 ```bash
-$ http -a username pie.dev/basic-auth/username/password
+http -a username pie.dev/basic-auth/username/password
 ```
 
 Please note that when you use [`--session`](#sessions), prompted passwords are persisted in session files.
@@ -1356,7 +1356,7 @@ Please note that when you use [`--session`](#sessions), prompted passwords are p
 To send an empty password without being prompted for it, include a trailing colon in the credentials:
 
 ```bash
-$ http -a username: pie.dev/headers
+http -a username: pie.dev/headers
 ```
 
 ### `.netrc`
@@ -1410,7 +1410,7 @@ By default, HTTP redirects are not followed and only the first
 response is shown:
 
 ```bash
-$ http pie.dev/redirect/3
+http pie.dev/redirect/3
 ```
 
 ### Follow `Location`
@@ -1419,7 +1419,7 @@ To instruct HTTPie to follow the `Location` header of `30x` responses
 and show the final response instead, use the `--follow, -F` option:
 
 ```bash
-$ http --follow pie.dev/redirect/3
+http --follow pie.dev/redirect/3
 ```
 
 With `307 Temporary Redirect` and `308 Permanent Redirect`, the method and the body of the original request
@@ -1431,7 +1431,7 @@ If you wish to see the intermediary requests/responses,
 then use the `--all` option:
 
 ```bash
-$ http --follow --all pie.dev/redirect/3
+http --follow --all pie.dev/redirect/3
 ```
 
 ### Limiting maximum redirects followed
@@ -1439,7 +1439,7 @@ $ http --follow --all pie.dev/redirect/3
 To change the default limit of maximum `30` redirects, use the `--max-redirects=<limit>` option:
 
 ```bash
-$ http --follow --all --max-redirects=2 pie.dev/redirect/3
+http --follow --all --max-redirects=2 pie.dev/redirect/3
 ```
 
 ## Proxies
@@ -1447,13 +1447,13 @@ $ http --follow --all --max-redirects=2 pie.dev/redirect/3
 You can specify proxies to be used through the `--proxy` argument for each protocol (which is included in the value in case of redirects across protocols):
 
 ```bash
-$ http --proxy=http:http://10.10.1.10:3128 --proxy=https:https://10.10.1.10:1080 example.org
+http --proxy=http:http://10.10.1.10:3128 --proxy=https:https://10.10.1.10:1080 example.org
 ```
 
 With Basic authentication:
 
 ```bash
-$ http --proxy=http:http://user:pass@10.10.1.10:3128 example.org
+http --proxy=http:http://user:pass@10.10.1.10:3128 example.org
 ```
 
 ### Environment variables
@@ -1475,7 +1475,7 @@ export NO_PROXY=localhost,example.com
 Usage for SOCKS is the same as for other types of [proxies](#proxies):
 
 ```bash
-$ http --proxy=http:socks5://user:pass@host:port --proxy=https:socks5://user:pass@host:port example.org
+http --proxy=http:socks5://user:pass@host:port --proxy=https:socks5://user:pass@host:port example.org
 ```
 
 ## HTTPS
@@ -1485,7 +1485,7 @@ $ http --proxy=http:socks5://user:pass@host:port --proxy=https:socks5://user:pas
 To skip the host’s SSL certificate verification, you can pass `--verify=no` (default is `yes`):
 
 ```bash
-$ http --verify=no https://pie.dev/get
+http --verify=no https://pie.dev/get
 ```
 
 ### Custom CA bundle
@@ -1493,7 +1493,7 @@ $ http --verify=no https://pie.dev/get
 You can also use `--verify=<CA_BUNDLE_PATH>` to set a custom CA bundle path:
 
 ```bash
-$ http --verify=/ssl/custom_ca_bundle https://example.org
+http --verify=/ssl/custom_ca_bundle https://example.org
 ```
 
 ### Client side SSL certificate
@@ -1502,14 +1502,14 @@ To use a client side certificate for the SSL communication, you can pass
 the path of the cert file with `--cert`:
 
 ```bash
-$ http --cert=client.pem https://example.org
+http --cert=client.pem https://example.org
 ```
 
 If the private key is not contained in the cert file, you may pass the
 path of the key file with `--cert-key`:
 
 ```bash
-$ http --cert=client.crt --cert-key=client.key https://example.org
+http --cert=client.crt --cert-key=client.key https://example.org
 ```
 
 If the given private key requires a passphrase, HTTPie will automatically detect it
@@ -1524,7 +1524,7 @@ If you don't want to see a prompt, you can supply the passphrase with the `--cer
 argument:
 
 ```bash
-$ http --cert=client.pem --cert-key=client.key --cert-key-pass=my_password https://example.org
+http --cert=client.pem --cert-key=client.key --cert-key-pass=my_password https://example.org
 ```
 
 ### SSL version
@@ -1545,7 +1545,7 @@ You can specify the available ciphers with `--ciphers`.
 It should be a string in the [OpenSSL cipher list format](https://www.openssl.org/docs/man1.1.0/man1/ciphers.html).
 
 ```bash
-$ http --ciphers=ECDHE-RSA-AES128-GCM-SHA256 https://pie.dev/get
+http --ciphers=ECDHE-RSA-AES128-GCM-SHA256 https://pie.dev/get
 ```
 
 Note: these cipher strings do not change the negotiated version of SSL or TLS, they only affect the list of available cipher suites.
@@ -1584,18 +1584,17 @@ It accepts a string of characters each of which represents a specific part of th
 Print request and response headers:
 
 ```bash
-$ http --print=Hh PUT pie.dev/put hello=world
+http --print=Hh PUT pie.dev/put hello=world
 ```
 
 #### Response meta
 
 The response metadata section currently includes the total time elapsed. It’s the number of seconds between opening the network connection and downloading the last byte of response the body.
 
-
 To _only_ show the response metadata, use `--meta, -m` (analogically to `--headers, -h` and `--body, -b`):
 
 ```bash
-$ http --meta pie.dev/delay/1
+http --meta pie.dev/delay/1
 ```
 
 ```console
@@ -1605,7 +1604,7 @@ Elapsed time: 1.099171542s
 The [extra verbose `-vv` output](#extra-verbose-output) includes the meta section by default. You can also show it in combination with other parts of the exchange via [`--print=m`](#what-parts-of-the-http-exchange-should-be-printed). For example, here we print it together with the response headers:
 
 ```bash
-$ http --print=hm pie.dev/get
+http --print=hm pie.dev/get
 ```
 
 ```http
@@ -1615,11 +1614,9 @@ Content-Type: application/json
 Elapsed time: 0.077538375s
 ```
 
-
 Please note that it also includes time spent on formatting the output, which adds a small penalty. Also, if the body is not part of the output, [we don’t spend time downloading it](#conditional-body-download).
 
 If you [use `--style` with one of the Pie themes](#colors-and-formatting), you’ll see the time information color-coded (green/yellow/orange/red) based on how long the exchange took.
-
 
 ### Verbose output
 
@@ -1700,7 +1697,7 @@ This is similar to performing a `HEAD` request, except that it applies to any HT
 Let’s say that there is an API that returns the whole resource when it is updated, but you are only interested in the response headers to see the status code after an update:
 
 ```bash
-$ http --headers PATCH pie.dev/patch name='New Name'
+http --headers PATCH pie.dev/patch name='New Name'
 ```
 
 Since you are only printing the HTTP headers here, the connection to the server is closed as soon as all the response headers have been received.
@@ -1730,31 +1727,31 @@ There are multiple useful ways to use piping:
 Redirect from a file:
 
 ```bash
-$ http PUT pie.dev/put X-API-Token:123 < files/data.json
+http PUT pie.dev/put X-API-Token:123 < files/data.json
 ```
 
 Or the output of another program:
 
 ```bash
-$ grep '401 Unauthorized' /var/log/httpd/error_log | http POST pie.dev/post
+grep '401 Unauthorized' /var/log/httpd/error_log | http POST pie.dev/post
 ```
 
 You can use `echo` for simple data:
 
 ```bash
-$ echo -n '{"name": "John"}' | http PATCH pie.dev/patch X-API-Token:123
+echo -n '{"name": "John"}' | http PATCH pie.dev/patch X-API-Token:123
 ```
 
-You can also use a Bash *here string*:
+You can also use a Bash _here string_:
 
 ```bash
-$ http pie.dev/post <<<'{"name": "John"}'
+http pie.dev/post <<<'{"name": "John"}'
 ```
 
 You can even pipe web services together using HTTPie:
 
 ```bash
-$ http GET https://api.github.com/repos/httpie/cli | http POST pie.dev/post
+http GET https://api.github.com/repos/httpie/cli | http POST pie.dev/post
 ```
 
 You can use `cat` to enter multiline data on the terminal:
@@ -1775,13 +1772,13 @@ $ cat | http POST pie.dev/post Content-Type:text/plain
 On macOS, you can send the contents of the clipboard with `pbpaste`:
 
 ```bash
-$ pbpaste | http PUT pie.dev/put
+pbpaste | http PUT pie.dev/put
 ```
 
 Passing data through `stdin` **can’t** be combined with data fields specified on the command line:
 
 ```bash
-$ echo -n 'data' | http POST example.org more=data  # This is invalid
+echo -n 'data' | http POST example.org more=data  # This is invalid
 ```
 
 To prevent HTTPie from reading `stdin` data you can use the `--ignore-stdin` option.
@@ -1793,11 +1790,11 @@ when generating API docs examples), you can specify the raw request body via
 the `--raw` option.
 
 ```bash
-$ http --raw 'Hello, world!' pie.dev/post
+http --raw 'Hello, world!' pie.dev/post
 ```
 
 ```bash
-$ http --raw '{"name": "John"}' pie.dev/post
+http --raw '{"name": "John"}' pie.dev/post
 ```
 
 ### Request data from a filename
@@ -1808,7 +1805,7 @@ It has the advantage that the `Content-Type` header is automatically set to the 
 For example, the following request sends the verbatim contents of that XML file with `Content-Type: application/xml`:
 
 ```bash
-$ http PUT pie.dev/put @files/data.xml
+http PUT pie.dev/put @files/data.xml
 ```
 
 File uploads are always streamed to avoid memory issues with large files.
@@ -1818,19 +1815,19 @@ File uploads are always streamed to avoid memory issues with large files.
 You can use the `--chunked` flag to instruct HTTPie to use `Transfer-Encoding: chunked`:
 
 ```bash
-$ http --chunked PUT pie.dev/put hello=world
+http --chunked PUT pie.dev/put hello=world
 ```
 
 ```bash
-$ http --chunked --multipart PUT pie.dev/put hello=world foo@files/data.xml
+http --chunked --multipart PUT pie.dev/put hello=world foo@files/data.xml
 ```
 
 ```bash
-$ http --chunked pie.dev/post @files/data.xml
+http --chunked pie.dev/post @files/data.xml
 ```
 
 ```bash
-$ cat files/data.xml | http --chunked pie.dev/post
+cat files/data.xml | http --chunked pie.dev/post
 ```
 
 ## Compressed request body
@@ -1838,17 +1835,17 @@ $ cat files/data.xml | http --chunked pie.dev/post
 You can use the `--compress, -x` flag to instruct HTTPie to use `Content-Encoding: deflate` and compress the request data:
 
 ```bash
-$ http --compress pie.dev/post @files/data.xml
+http --compress pie.dev/post @files/data.xml
 ```
 
 ```bash
-$ cat files/data.xml | http --compress pie.dev/post
+cat files/data.xml | http --compress pie.dev/post
 ```
 
 If compressing the data does not save size, HTTPie sends it untouched. To always compress the data, specify `--compress, -x` twice:
 
 ```bash
-$ http -xx PUT pie.dev/put hello=world
+http -xx PUT pie.dev/put hello=world
 ```
 
 ## Terminal output
@@ -1884,7 +1881,7 @@ Use one of these options to control output processing:
 HTTPie looks at `Content-Type` to select the right syntax highlighter and formatter for each message body. If that fails (e.g., the server provides the wrong type), or you prefer a different treatment, you can manually overwrite the mime type for a response with `--response-mime`:
 
 ```bash
-$ http --response-mime=text/yaml pie.dev/get
+http --response-mime=text/yaml pie.dev/get
 ```
 
 Formatting has the following effects:
@@ -1916,7 +1913,7 @@ For example, this is how you would disable the default header and JSON key
 sorting, and specify a custom JSON indent size:
 
 ```bash
-$ http --format-options headers.sort:false,json.sort_keys:false,json.indent:2 pie.dev/get
+http --format-options headers.sort:false,json.sort_keys:false,json.indent:2 pie.dev/get
 ```
 
 There are also two shortcuts that allow you to quickly disable and re-enable
@@ -1940,19 +1937,19 @@ Most of the time, only the raw response body is of an interest when the output i
 Download a file:
 
 ```bash
-$ http pie.dev/image/png > image.png
+http pie.dev/image/png > image.png
 ```
 
 Download an image of an [Octocat](https://octodex.github.com/images/original.jpg), resize it using [ImageMagick](https://imagemagick.org/), and upload it elsewhere:
 
 ```bash
-$ http octodex.github.com/images/original.jpg | convert - -resize 25% - | http example.org/Octocats
+http octodex.github.com/images/original.jpg | convert - -resize 25% - | http example.org/Octocats
 ```
 
 Force colorizing and formatting, and show both the request and the response in `less` pager:
 
 ```bash
-$ http --pretty=all --verbose pie.dev/get | less -R
+http --pretty=all --verbose pie.dev/get | less -R
 ```
 
 The `-R` flag tells `less` to interpret color escape sequences included HTTPie’s output.
@@ -1973,7 +1970,7 @@ Binary data is also suppressed in redirected but prettified output.
 The connection is closed as soon as we know that the response body is binary,
 
 ```bash
-$ http pie.dev/bytes/2000
+http pie.dev/bytes/2000
 ```
 
 You will nearly instantly see something like this:
@@ -1992,7 +1989,7 @@ Content-Type: application/octet-stream
 HTTPie tries to do its best to decode message bodies when printing them to the terminal correctly. It uses the encoding specified in the `Content-Type` `charset` attribute. If a message doesn’t define its charset, we auto-detect it. For very short messages (1–32B), where auto-detection would be unreliable, we default to UTF-8. For cases when the response encoding is still incorrect, you can manually overwrite the response charset with `--response-charset`:
 
 ```bash
-$ http --response-charset=big5 pie.dev/get
+http --response-charset=big5 pie.dev/get
 ```
 
 ## Download mode
@@ -2002,7 +1999,7 @@ HTTPie features a download mode in which it acts similarly to `wget`.
 When enabled using the `--download, -d` flag, response headers are printed to the terminal (`stderr`), and a progress bar is shown while the response body is being saved to a file.
 
 ```bash
-$ http --download https://github.com/httpie/cli/archive/master.tar.gz
+http --download https://github.com/httpie/cli/archive/master.tar.gz
 ```
 
 ```http
@@ -2031,7 +2028,7 @@ To prevent data loss by overwriting, HTTPie adds a unique numerical suffix to th
 You can also redirect the response body to another program while the response headers and progress are still shown in the terminal:
 
 ```bash
-$ http -d https://github.com/httpie/cli/archive/master.tar.gz | tar zxf -
+http -d https://github.com/httpie/cli/archive/master.tar.gz | tar zxf -
 ```
 
 ### Resuming downloads
@@ -2041,7 +2038,7 @@ This only works with servers that support `Range` requests and `206 Partial Cont
 If the server doesn’t support that, the whole file will simply be downloaded:
 
 ```bash
-$ http -dco file.zip example.org/file
+http -dco file.zip example.org/file
 ```
 
 `-dco` is shorthand for `--download` `--continue` `--output`.
@@ -2075,7 +2072,7 @@ The `--stream` option is automatically enabled when the response headers include
 Prettified streamed response:
 
 ```bash
-$ http --stream pie.dev/stream/3
+http --stream pie.dev/stream/3
 ```
 
 Streamed output by small chunks à la `tail -f`:
@@ -2116,20 +2113,20 @@ It also means that they can be read by anyone who has access to the session file
 You can create one or more named session per host. For example, this is how you can create a new session named `user1` for `pie.dev`:
 
 ```bash
-$ http --session=user1 -a user1:password pie.dev/get X-Foo:Bar
+http --session=user1 -a user1:password pie.dev/get X-Foo:Bar
 ```
 
 From now on, you can refer to the session by its name (`user1`).
 When you choose to use the session again, all previously specified authentication or HTTP headers will automatically be set:
 
 ```bash
-$ http --session=user1 pie.dev/get
+http --session=user1 pie.dev/get
 ```
 
 To create or reuse a different session, simply specify a different name:
 
 ```bash
-$ http --session=user2 -a user2:password pie.dev/get X-Bar:Foo
+http --session=user2 -a user2:password pie.dev/get X-Bar:Foo
 ```
 
 Named sessions’ data is stored in JSON files inside the `sessions` subdirectory of the [config](#config) directory, typically `~/.config/httpie/sessions/<host>/<name>.json` (`%APPDATA%\httpie\sessions\<host>\<name>.json` on Windows).
@@ -2137,7 +2134,7 @@ Named sessions’ data is stored in JSON files inside the `sessions` subdirector
 If you have executed the above commands on a Unix machine, you should be able to list the generated sessions files using:
 
 ```bash
-$ ls -l ~/.config/httpie/sessions/pie.dev
+ls -l ~/.config/httpie/sessions/pie.dev
 ```
 
 ### Anonymous sessions
@@ -2200,7 +2197,7 @@ Cookies persisted in sessions files have a `domain` field. This _binds_ them to 
 Using this session file, we include `Cookie: pie=apple` only in requests against `pie.dev` and subdomains (e.g., `foo.pie.dev` or `foo.bar.pie.dev`):
 
 ```bash
-$ http --session=./session.json pie.dev/cookies
+http --session=./session.json pie.dev/cookies
 ```
 
 ```json
@@ -2226,7 +2223,7 @@ To make a cookie domain _unbound_ (i.e., to make it available to all hosts, incl
 ```
 
 ```bash
-$ http --session=./session.json pie.dev/cookies
+http --session=./session.json pie.dev/cookies
 ```
 
 ```json
@@ -2237,7 +2234,6 @@ $ http --session=./session.json pie.dev/cookies
 }
 ```
 
-
 ### Cookie storage behavior
 
 There are three possible sources of persisted cookies within a session. They have the following storage priority: 1—response; 2—command line; 3—session file.
@@ -2245,13 +2241,13 @@ There are three possible sources of persisted cookies within a session. They hav
 1. Receive a response with a `Set-Cookie` header:
 
     ```bash
-    $ http --session=./session.json pie.dev/cookie/set?foo=bar
+    http --session=./session.json pie.dev/cookie/set?foo=bar
     ```
 
 2. Send a cookie specified on the command line as seen in [cookies](#cookies):
 
     ```bash
-    $ http --session=./session.json pie.dev/headers Cookie:foo=bar
+    http --session=./session.json pie.dev/headers Cookie:foo=bar
     ```
 
 3. Manually set cookie parameters in the session file:
@@ -2315,7 +2311,6 @@ These flags are available for both `sessions upgrade` and `sessions upgrade-all`
 |------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `--bind-cookies` | Bind all previously [unbound cookies](#host-based-cookie-policy) to the session’s host ([context](https://github.com/httpie/cli/security/advisories/GHSA-9w4w-cpc8-h2fq)). |
 
-
 ## Config
 
 HTTPie uses a simple `config.json` file.
@@ -2334,8 +2329,8 @@ On Windows, the config file is located at `%APPDATA%\httpie\config.json`.
 The config directory can be changed by setting the `$HTTPIE_CONFIG_DIR` environment variable:
 
 ```bash
-$ export HTTPIE_CONFIG_DIR=/tmp/httpie
-$ http pie.dev/get
+export HTTPIE_CONFIG_DIR=/tmp/httpie
+http pie.dev/get
 ```
 
 ### Configurable options
@@ -2349,7 +2344,7 @@ An `Array` (by default empty) of default options that should be applied to every
 For instance, you can use this config option to change your default color theme:
 
 ```bash
-$ cat ~/.config/httpie/config.json
+cat ~/.config/httpie/config.json
 ```
 
 ```json
@@ -2362,6 +2357,24 @@ $ cat ~/.config/httpie/config.json
 
 Technically, it is possible to include any HTTPie options in there.
 However, it is not recommended modifying the default behavior in a way that would break your compatibility with the wider world as that may become confusing.
+
+#### `default_headers`
+
+An `Dict` (by default empty) of default headers that should be applied to every invocation of HTTPie.
+
+For instance, you can use this config option to change your request user agent:
+
+```bash
+cat ~/.config/httpie/config.json
+```
+
+```json
+{
+    "default_headers": {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+    }
+}
+```
 
 #### `plugins_dir`
 
@@ -2427,7 +2440,7 @@ This command is currently in beta.
 You can check whether a new update is available for your system by running `httpie cli check-updates`:
 
 ```bash-termible
-$ httpie cli check-updates
+httpie cli check-updates
 ```
 
 #### `httpie cli export-args`
@@ -2494,7 +2507,7 @@ httpie_converter (1.0.0)
 For upgrading already installed plugins, use `httpie plugins upgrade`.
 
 ```bash
-$ httpie cli plugins upgrade httpie-plugin
+httpie cli plugins upgrade httpie-plugin
 ```
 
 ##### `httpie cli plugins uninstall`
@@ -2503,7 +2516,7 @@ Uninstall plugins from the isolated plugins directory. If the plugin is not inst
 through `httpie cli plugins install`, it won’t uninstall it.
 
 ```bash
-$ httpie cli plugins uninstall httpie-plugin
+httpie cli plugins uninstall httpie-plugin
 ```
 
 ## Meta
@@ -2598,4 +2611,3 @@ BSD-3-Clause: [LICENSE](https://github.com/httpie/cli/blob/master/LICENSE).
 ### Authors
 
 [Jakub Roztocil](https://roztocil.co) ([@jakubroztocil](https://twitter.com/jakubroztocil)) created HTTPie and [these fine people](https://github.com/httpie/cli/blob/master/AUTHORS.md) have contributed.
-

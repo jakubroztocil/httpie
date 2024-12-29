@@ -137,7 +137,8 @@ class BaseConfigDict(dict):
 class Config(BaseConfigDict):
     FILENAME = 'config.json'
     DEFAULTS = {
-        'default_options': []
+        'default_options': [],
+        'default_headers': []
     }
 
     def __init__(self, directory: Union[str, Path] = DEFAULT_CONFIG_DIR):
@@ -148,6 +149,10 @@ class Config(BaseConfigDict):
     @property
     def default_options(self) -> list:
         return self['default_options']
+
+    @property
+    def default_headers(self) -> list:
+        return self["default_headers"]
 
     def _configured_path(self, config_option: str, default: str) -> None:
         return Path(

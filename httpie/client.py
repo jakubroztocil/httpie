@@ -260,9 +260,10 @@ def apply_missing_repeated_headers(
     prepared_request.headers = new_headers
 
 
-def make_default_headers(args: argparse.Namespace) -> HTTPHeadersDict:
+def make_default_headers(args: argparse.Namespace, config_default_headers: dict) -> HTTPHeadersDict:
     default_headers = HTTPHeadersDict({
-        'User-Agent': DEFAULT_UA
+        'User-Agent': DEFAULT_UA,
+        **config_default_headers
     })
 
     auto_json = args.data and not args.form
@@ -275,6 +276,7 @@ def make_default_headers(args: argparse.Namespace) -> HTTPHeadersDict:
         # If sending files, `requests` will set
         # the `Content-Type` for us.
         default_headers['Content-Type'] = FORM_CONTENT_TYPE
+
     return default_headers
 
 
@@ -339,8 +341,13 @@ def make_request_kwargs(
     if (args.json or auto_json) and isinstance(data, dict):
         data = json_dict_to_request_body(data)
 
+    # Apply config's default headers
+    config_default_headers = {}
+    if type(env.config.default_headers) is dict:
+        config_default_headers = env.config.default_headers
+
     # Finalize headers.
-    headers = make_default_headers(args)
+    headers = make_default_headers(args, config_default_headers)
     if base_headers:
         headers.update(base_headers)
     headers.update(args.headers)
