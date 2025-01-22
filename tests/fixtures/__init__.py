@@ -22,6 +22,7 @@ FILE_PATH = FIXTURES_ROOT / 'test.txt'
 JSON_FILE_PATH = FIXTURES_ROOT / 'test.json'
 JSON_WITH_DUPE_KEYS_FILE_PATH = FIXTURES_ROOT / 'test_with_dupe_keys.json'
 BIN_FILE_PATH = FIXTURES_ROOT / 'test.bin'
+TINY_FILE_PATH = FIXTURES_ROOT / 'test_tiny.txt'
 
 XML_FILES_PATH = FIXTURES_ROOT / 'xmldata'
 XML_FILES_VALID = list((XML_FILES_PATH / 'valid').glob('*_raw.xml'))
@@ -39,6 +40,7 @@ SESSION_VARIABLES = {
 FILE_PATH_ARG = patharg(FILE_PATH)
 BIN_FILE_PATH_ARG = patharg(BIN_FILE_PATH)
 JSON_FILE_PATH_ARG = patharg(JSON_FILE_PATH)
+TINY_FILE_PATH_ARG = patharg(TINY_FILE_PATH)
 
 # Strip because we don't want new lines in the data so that we can
 # easily count occurrences also when embedded in JSON (where the new

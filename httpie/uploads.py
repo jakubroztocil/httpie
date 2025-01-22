@@ -258,6 +258,9 @@ def compress_request(
         body_bytes = request.body.encode()
     elif hasattr(request.body, 'read'):
         body_bytes = request.body.read()
+        # The body is consumed now, so if we don't end up compressing we should
+        # use the bytes we just read
+        request.body = body_bytes
     else:
         body_bytes = request.body
     deflated_data = deflater.compress(body_bytes)
