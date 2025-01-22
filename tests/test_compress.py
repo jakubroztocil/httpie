@@ -11,7 +11,7 @@ our zlib-encoded request data.
 import base64
 import zlib
 
-from .fixtures import FILE_PATH, FILE_CONTENT
+from .fixtures import FILE_PATH, FILE_CONTENT, TINY_FILE_PATH_ARG
 from httpie.status import ExitStatus
 from .utils import StdinBytesIO, http, HTTP_OK, MockEnvironment
 
@@ -138,3 +138,16 @@ def test_compress_file(httpbin_both):
         'multipart/form-data; boundary=')
     assert r.json['files'] == {}
     assert FILE_CONTENT not in r
+
+
+def test_compress_skip_negative_ratio_file_upload(httpbin):
+    """Reading the upload body but not compressing it doesn't cause a hang."""
+    r = http(
+        '--compress',
+        'PUT',
+        httpbin + '/put',
+        f'@{TINY_FILE_PATH_ARG}',
+    )
+    assert HTTP_OK in r
+    assert 'Content-Encoding' not in r.json['headers']
+    assert r.json['data'].strip() == 'test'
