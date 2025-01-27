@@ -21,7 +21,7 @@ Examples:
     $ python extras/profiling/benchmarks.py --fast
 
     # For verify everything works as expected, pass --debug-single-value.
-    # It will only run everything once, so the resuls are not reliable. But
+    # It will only run everything once, so the results are not reliable. But
     # very useful when iterating on a benchmark
     $ python extras/profiling/benchmarks.py --debug-single-value
 
