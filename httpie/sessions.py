@@ -204,7 +204,7 @@ class Session(BaseConfigDict):
                 continue  # Ignore explicitly unset headers
 
             original_value = value
-            if type(value) is not str:
+            if not isinstance(value, str):
                 value = value.decode()
 
             if name.lower() == 'user-agent' and value.startswith('HTTPie/'):
