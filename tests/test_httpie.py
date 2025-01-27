@@ -12,6 +12,9 @@ from httpie.context import Environment
 from httpie.encoding import UTF8
 from httpie.status import ExitStatus
 from .utils import HTTP_OK, MockEnvironment, StdinBytesIO, http
+import httpie.cli.argtemplate
+import tempfile
+import json
 
 
 def test_main_entry_point():
@@ -370,3 +373,57 @@ def test_options_dropping_redundant_content_length(httpbin, method):
         httpbin + '/anything'
     )
     assert 'Content-Length' not in r
+
+
+def test_store_template():
+    """
+    Tests that a template can be stored with the command 'http template <name> <method> <url> ...'
+    """
+    with tempfile.NamedTemporaryFile('w+', delete=False) as temp_fp:
+        httpie.cli.argtemplate.TEMPLATE_FILE = temp_fp.name
+
+        http('template', 'test_template', 'GET', 'https://catfact.ninja/fact', '--traceback', '--timeout=3')
+
+        template = json.load(temp_fp)
+        assert 'test_template' in template
+
+
+def test_run_template(httpbin_both):
+    """
+    Tests that a template can be loaded with the command 'http runt <template>'
+    """
+    with tempfile.NamedTemporaryFile('w+', delete=False) as temp_fp:
+        httpie.cli.argtemplate.TEMPLATE_FILE = temp_fp.name
+
+        r = http('template', 'test_template', 'GET', httpbin_both + '/get', '--debug')  # store template
+
+        r = http('runt', 'test_template', '--traceback', '--timeout=3', tolerate_error_exit_status=True)  # run it
+
+        assert HTTP_OK in r
+
+
+def test_delete_template():
+    """
+    Tests that a template can be deleted with the command 'http delt <template>'
+    """
+    with tempfile.NamedTemporaryFile('w+', delete=False) as temp_fp:
+        httpie.cli.argtemplate.TEMPLATE_FILE = temp_fp.name
+        http('template', 'test_template', 'GET', 'https://catfact.ninja/fact', '--traceback', '--timeout=3')  # store template
+
+        http('delt', 'test_template', '--traceback', '--timeout=3', tolerate_error_exit_status=True)  # delete it
+
+        stored_templates = json.load(temp_fp)
+        assert 'test_template' not in stored_templates
+
+
+def test_edit_template():
+    """
+    Tests that a template can be edited with the command 'http editt <template>'
+    """
+    with tempfile.NamedTemporaryFile('w+', delete=False) as temp_fp:
+        httpie.cli.argtemplate.TEMPLATE_FILE = temp_fp.name
+        http('template', 'test_template', 'GET', 'https://catfact.ninja/fact', '--traceback', '--timeout=3')  # store template
+
+        http('editt', 'test_template', 'param', 'value', '--debug')  # edit it
+        stored_templates = json.load(temp_fp)
+        assert 'param' in stored_templates['test_template']['data']

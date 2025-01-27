@@ -48,6 +48,44 @@ def raw_main(
     if use_default_options and env.config.default_options:
         args = env.config.default_options + args
 
+    if len(args) > 0:
+        # Unlike when running httpie commands without templates, when creating templates you need to specify an http method
+        if (args[0] == "template"):
+            # http template <name> <method> <url> |<REQUEST_ITEM>|
+            if len(args) < 2:
+                return ExitStatus.ERROR
+            if len(args) < 4:
+                return ExitStatus.ERROR
+            from httpie.cli.argtemplate import store_json_template
+            store_json_template(args[1:])
+            return ExitStatus.SUCCESS
+        elif (args[0] == "runt"):
+            # http runt <name>
+            if len(args) < 2:
+                print("No template name was specified")
+                return ExitStatus.ERROR
+            from httpie.cli.argtemplate import store_json_template, load_template
+            args = load_template(args[1])
+        elif (args[0] == "editt"):
+            # http editt <name> <request_item> <new_value>
+            if len(args) < 2:
+                print("No template name was specified")
+                return ExitStatus.ERROR
+            if len(args) < 4:
+                print("Specify at least one parameter and its new value to edit a template")
+                return ExitStatus.ERROR
+            from httpie.cli.argtemplate import edit_json_template
+            edit_json_template(args[1:])
+            return ExitStatus.SUCCESS
+        elif (args[0] == "delt"):
+            # http delt <name>
+            if len(args) < 2:
+                print("No template name was specified")
+                return ExitStatus.ERROR
+            from httpie.cli.argtemplate import delete_template
+            delete_template(args[1])
+            return ExitStatus.SUCCESS
+
     include_debug_info = '--debug' in args
     include_traceback = include_debug_info or '--traceback' in args
 

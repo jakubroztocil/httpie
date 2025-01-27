@@ -1,0 +1,1273 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-7.2.2, pluggy-1.0.0
+rootdir: /Users/editflores/editf-github/dd2480/DD2480-httpie, configfile: pytest.ini
+plugins: mock-3.10.0, cov-4.0.0, httpbin-1.0.2, lazy-fixture-0.6.3
+collected 1048 items
+
+tests/test_argtemplate.py .................                              [  1%]
+tests/test_auth.py ..........                                            [  2%]
+tests/test_compress.py .......                                           [  3%]
+tests/test_downloads.py ......                                           [  3%]
+tests/test_errors.py ....                                                [  4%]
+tests/test_httpie.py ...........s................                        [  6%]
+tests/test_json.py .                                                     [  6%]
+tests/test_auth.py ..........                                            [  7%]
+tests/test_compress.py .......                                           [  8%]
+tests/test_downloads.py ......                                           [  9%]
+tests/test_errors.py ....                                                [  9%]
+tests/test_httpie.py ...........s................                        [ 12%]
+tests/test_json.py .                                                     [ 12%]
+tests/test_auth.py .........                                             [ 13%]
+tests/test_auth_plugins.py ....                                          [ 13%]
+tests/test_binary.py ......                                              [ 14%]
+tests/test_cli.py ..............F.......................                 [ 17%]
+tests/test_cli_ui.py ....                                                [ 18%]
+tests/test_cli_utils.py ..                                               [ 18%]
+tests/test_compress.py ..                                                [ 18%]
+tests/test_config.py ........s                                           [ 19%]
+tests/test_cookie.py .                                                   [ 19%]
+tests/test_cookie_on_redirects.py .....................                  [ 21%]
+tests/test_defaults.py .................                                 [ 23%]
+tests/test_downloads.py ....................                             [ 25%]
+tests/test_encoding.py ................................................. [ 29%]
+....                                                                     [ 30%]
+tests/test_errors.py ....                                                [ 30%]
+tests/test_exit_status.py .........                                      [ 31%]
+tests/test_httpie.py .........................                           [ 33%]
+tests/test_httpie_cli.py .....................................           [ 37%]
+tests/test_json.py ..................................................... [ 42%]
+........................................................................ [ 49%]
+........................................................................ [ 56%]
+........................................................................ [ 62%]
+.......................                                                  [ 65%]
+tests/test_meta.py ......                                                [ 65%]
+tests/test_offline.py .........                                          [ 66%]
+tests/test_output.py ......FF.FxXx...................................... [ 71%]
+........................................................................ [ 78%]
+.                                                                        [ 78%]
+tests/test_parser_schema.py .                                            [ 78%]
+tests/test_plugins_cli.py ...............                                [ 79%]
+tests/test_redirects.py ...x......                                       [ 80%]
+tests/test_regressions.py ...                                            [ 81%]
+tests/test_sessions.py .........................FF.F.................... [ 85%]
+............                                                             [ 86%]
+tests/test_ssl.py .ss....................                                [ 89%]
+tests/test_stream.py ................                                    [ 90%]
+tests/test_tokens.py ...................                                 [ 92%]
+tests/test_transport_plugin.py .                                         [ 92%]
+tests/test_update_warnings.py ............                               [ 93%]
+tests/test_uploads.py ...........................                        [ 96%]
+tests/test_windows.py s.                                                 [ 96%]
+tests/test_xml.py .................                                      [ 98%]
+tests/utils/matching/test_matching.py ....................               [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_url_colon_slash_slash_only ________________________
+
+    def test_url_colon_slash_slash_only():
+        r = http('://', tolerate_error_exit_status=True)
+>       assert r.stderr.strip() == "http: error: InvalidURL: Invalid URL 'http://': No host supplied"
+E       AssertionError: assert 'http: LogLev...host supplied' == 'http: error:...host supplied'
+E         - http: error: InvalidURL: Invalid URL 'http://': No host supplied
+E         ?        ^^^^
+E         + http: LogLevel.ERROR: InvalidURL: Invalid URL 'http://': No host supplied
+E         ?       ++++ ^^^^^^^^^
+
+tests/test_cli.py:192: AssertionError
+----------------------------- Captured stderr call -----------------------------
+
+http: LogLevel.ERROR: InvalidURL: Invalid URL 'http://': No host supplied
+
+
+_____________ TestQuietFlag.test_quiet_with_check_status_non_zero ______________
+
+self = <tests.test_output.TestQuietFlag object at 0x10e5056d0>
+httpbin = <pytest_httpbin.serve.Server object at 0x10f18d0d0>
+
+    def test_quiet_with_check_status_non_zero(self, httpbin):
+        r = http(
+            '--quiet', '--check-status', httpbin + '/status/500',
+            tolerate_error_exit_status=True,
+        )
+>       assert 'http: warning: HTTP 500' in r.stderr
+E       AssertionError: assert 'http: warning: HTTP 500' in '\nhttp: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR\n\n\n'
+E        +  where '\nhttp: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR\n\n\n' = ''.stderr
+
+tests/test_output.py:69: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [08/Mar/2023 13:41:38] "GET /status/500 HTTP/1.1" 500 0
+
+http: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR
+
+
+___________ TestQuietFlag.test_quiet_with_check_status_non_zero_pipe ___________
+
+self = <tests.test_output.TestQuietFlag object at 0x10e506410>
+httpbin = <pytest_httpbin.serve.Server object at 0x10f18d0d0>
+
+    def test_quiet_with_check_status_non_zero_pipe(self, httpbin):
+        r = http(
+            '--quiet', '--check-status', httpbin + '/status/500',
+            tolerate_error_exit_status=True,
+            env=MockEnvironment(stdout_isatty=False)
+        )
+>       assert 'http: warning: HTTP 500' in r.stderr
+E       AssertionError: assert 'http: warning: HTTP 500' in '\nhttp: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR\n\n\n'
+E        +  where '\nhttp: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR\n\n\n' = ''.stderr
+
+tests/test_output.py:77: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [08/Mar/2023 13:41:38] "GET /status/500 HTTP/1.1" 500 0
+
+http: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR
+
+
+________ TestQuietFlag.test_quiet_quiet_with_check_status_non_zero_pipe ________
+
+self = <tests.test_output.TestQuietFlag object at 0x10e506290>
+httpbin = <pytest_httpbin.serve.Server object at 0x10f18d0d0>
+
+    def test_quiet_quiet_with_check_status_non_zero_pipe(self, httpbin):
+        r = http(
+            '--quiet', '--quiet', '--check-status', httpbin + '/status/500',
+            tolerate_error_exit_status=True,
+            env=MockEnvironment(stdout_isatty=False)
+        )
+>       assert 'http: warning: HTTP 500' in r.stderr
+E       AssertionError: assert 'http: warning: HTTP 500' in '\nhttp: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR\n\n\n'
+E        +  where '\nhttp: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR\n\n\n' = ''.stderr
+
+tests/test_output.py:92: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [08/Mar/2023 13:41:38] "GET /status/500 HTTP/1.1" 500 0
+
+http: LogLevel.WARNING: HTTP 500 INTERNAL SERVER ERROR
+
+
+_ TestCookieStorage.test_existing_and_new_cookies_sent_in_request[new=bar;chocolate=milk-new_cookies_dict1-chocolate=milk; cookie1=foo; cookie2=foo; new=bar] _
+
+self = <tests.test_sessions.TestCookieStorage object at 0x10e50d3d0>
+new_cookies = 'new=bar;chocolate=milk'
+new_cookies_dict = {'chocolate': 'milk', 'new': 'bar'}
+expected = 'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+httpbin = <pytest_httpbin.serve.Server object at 0x10f18d0d0>
+
+    @pytest.mark.parametrize(
+        'new_cookies, new_cookies_dict, expected',
+        [(
+            'new=bar',
+            {'new': 'bar'},
+            'cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar;chocolate=milk',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar; chocolate=milk',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar;; chocolate=milk;;;',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar; chocolate=milk;;;',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        )
+        ]
+    )
+    def test_existing_and_new_cookies_sent_in_request(self, new_cookies, new_cookies_dict, expected, httpbin):
+        r = http(
+            '--session', str(self.session_path),
+            '--print=H',
+            httpbin.url,
+            'Cookie:' + new_cookies,
+        )
+        # Note: cookies in response are in alphabetical order
+>       assert f'Cookie: {expected}' in r
+E       AssertionError: assert 'Cookie: chocolate=milk; cookie1=foo; cookie2=foo; new=bar' in 'GET / HTTP/1.1\r\nAccept: */*\r\nAccept-Encoding: gzip, deflate, br\r\nConnection: keep-alive\r\nCookie: cookie1=foo; cookie2=foo; new=bar; chocolate=milk\r\nHost: 127.0.0.1:61584\r\nUser-Agent: HTTPie/3.2.1\r\n\r\n'
+
+tests/test_sessions.py:485: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [08/Mar/2023 13:42:47] "GET / HTTP/1.1" 200 12144
+_ TestCookieStorage.test_existing_and_new_cookies_sent_in_request[new=bar; chocolate=milk-new_cookies_dict2-chocolate=milk; cookie1=foo; cookie2=foo; new=bar] _
+
+self = <tests.test_sessions.TestCookieStorage object at 0x10e50d690>
+new_cookies = 'new=bar; chocolate=milk'
+new_cookies_dict = {'chocolate': 'milk', 'new': 'bar'}
+expected = 'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+httpbin = <pytest_httpbin.serve.Server object at 0x10f18d0d0>
+
+    @pytest.mark.parametrize(
+        'new_cookies, new_cookies_dict, expected',
+        [(
+            'new=bar',
+            {'new': 'bar'},
+            'cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar;chocolate=milk',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar; chocolate=milk',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar;; chocolate=milk;;;',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar; chocolate=milk;;;',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        )
+        ]
+    )
+    def test_existing_and_new_cookies_sent_in_request(self, new_cookies, new_cookies_dict, expected, httpbin):
+        r = http(
+            '--session', str(self.session_path),
+            '--print=H',
+            httpbin.url,
+            'Cookie:' + new_cookies,
+        )
+        # Note: cookies in response are in alphabetical order
+>       assert f'Cookie: {expected}' in r
+E       AssertionError: assert 'Cookie: chocolate=milk; cookie1=foo; cookie2=foo; new=bar' in 'GET / HTTP/1.1\r\nAccept: */*\r\nAccept-Encoding: gzip, deflate, br\r\nConnection: keep-alive\r\nCookie: cookie1=foo; cookie2=foo; new=bar; chocolate=milk\r\nHost: 127.0.0.1:61584\r\nUser-Agent: HTTPie/3.2.1\r\n\r\n'
+
+tests/test_sessions.py:485: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [08/Mar/2023 13:42:47] "GET / HTTP/1.1" 200 12144
+_ TestCookieStorage.test_existing_and_new_cookies_sent_in_request[new=bar; chocolate=milk;;;-new_cookies_dict4-chocolate=milk; cookie1=foo; cookie2=foo; new=bar] _
+
+self = <tests.test_sessions.TestCookieStorage object at 0x10e50dc10>
+new_cookies = 'new=bar; chocolate=milk;;;'
+new_cookies_dict = {'chocolate': 'milk', 'new': 'bar'}
+expected = 'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+httpbin = <pytest_httpbin.serve.Server object at 0x10f18d0d0>
+
+    @pytest.mark.parametrize(
+        'new_cookies, new_cookies_dict, expected',
+        [(
+            'new=bar',
+            {'new': 'bar'},
+            'cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar;chocolate=milk',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar; chocolate=milk',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar;; chocolate=milk;;;',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'cookie1=foo; cookie2=foo; new=bar'
+        ),
+            (
+            'new=bar; chocolate=milk;;;',
+            {'new': 'bar', 'chocolate': 'milk'},
+            'chocolate=milk; cookie1=foo; cookie2=foo; new=bar'
+        )
+        ]
+    )
+    def test_existing_and_new_cookies_sent_in_request(self, new_cookies, new_cookies_dict, expected, httpbin):
+        r = http(
+            '--session', str(self.session_path),
+            '--print=H',
+            httpbin.url,
+            'Cookie:' + new_cookies,
+        )
+        # Note: cookies in response are in alphabetical order
+>       assert f'Cookie: {expected}' in r
+E       AssertionError: assert 'Cookie: chocolate=milk; cookie1=foo; cookie2=foo; new=bar' in 'GET / HTTP/1.1\r\nAccept: */*\r\nAccept-Encoding: gzip, deflate, br\r\nConnection: keep-alive\r\nCookie: cookie1=foo; cookie2=foo; new=bar; chocolate=milk\r\nHost: 127.0.0.1:61584\r\nUser-Agent: HTTPie/3.2.1\r\n\r\n'
+
+tests/test_sessions.py:485: AssertionError
+----------------------------- Captured stderr call -----------------------------
+127.0.0.1 - - [08/Mar/2023 13:42:47] "GET / HTTP/1.1" 200 12144
+=============================== warnings summary ===============================
+tests/test_downloads.py::TestDownloads::test_actual_download[http]
+tests/test_httpie.py::test_raw_POST_key_values_supplied
+tests/test_offline.py::test_offline_chunked
+tests/test_uploads.py::TestMultipartFormDataFileUpload::test_upload_multiple_fields_with_the_same_name
+tests/test_uploads.py::TestMultipartFormDataFileUpload::test_multipart_preserve_order
+tests/test_uploads.py::TestRequestBodyFromFilePath::test_request_body_from_file_by_path
+tests/test_uploads.py::TestRequestBodyFromFilePath::test_request_body_from_file_by_path_no_data_items_allowed
+tests/test_uploads.py::TestRequestBodyFromFilePath::test_multiple_request_bodies_from_file_by_path
+tests/test_windows.py::TestFakeWindows::test_output_file_pretty_not_allowed_on_windows
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:159: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.txt'>
+    self.args, no_options = super().parse_known_args(args, namespace)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_unset[http]
+tests/test_uploads.py::TestMultipartFormDataFileUpload::test_multipart
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:451: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.txt'>
+    result = self._make(_map(kwds.pop, field_names, self))
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py: 10 warnings
+tests/test_compress.py: 7 warnings
+tests/test_downloads.py: 1 warning
+tests/test_errors.py: 2 warnings
+tests/test_httpie.py: 27 warnings
+tests/test_json.py: 1 warning
+tests/test_cli.py: 2 warnings
+tests/test_ssl.py: 19 warnings
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/pytest_httpbin/serve.py:65: DeprecationWarning: ssl.wrap_socket() is deprecated, use SSLContext.wrap_socket()
+    ssock = ssl.wrap_socket(
+
+tests/test_auth.py: 10 warnings
+tests/test_compress.py: 7 warnings
+tests/test_downloads.py: 1 warning
+tests/test_errors.py: 2 warnings
+tests/test_httpie.py: 27 warnings
+tests/test_json.py: 1 warning
+tests/test_cli.py: 2 warnings
+tests/test_ssl.py: 19 warnings
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ssl.py:1438: DeprecationWarning: ssl.PROTOCOL_TLS is deprecated
+    context = SSLContext(ssl_version)
+
+tests/test_auth.py::test_basic_auth[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61637)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_digest_auth[https---auth-type]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61638)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_digest_auth[https---auth-type]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61639)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_digest_auth[https--A]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61640)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_digest_auth[https--A]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61641)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_bearer_auth[https-token_1]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61642)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_bearer_auth[https-long_tokenlong_tokenlong_tokenlong_tokenlong_token]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61643)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_bearer_auth[https-user:style]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61644)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_credentials_in_url[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61645)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_credentials_in_url_auth_flag_has_priority[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61646)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_netrc[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61647)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_auth.py::test_ignore_netrc[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61648)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_skip_negative_ratio[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61649)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_force_with_negative_ratio[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61650)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_json[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61651)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_form[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61652)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_raw[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61653)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_stdin[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61654)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_compress.py::test_compress_file[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61655)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_downloads.py::TestDownloads::test_actual_download[https]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/rich/progress.py:1557: ResourceWarning: unclosed file <_io.FileIO name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.txt' mode='rb' closefd=True>
+    Column(no_wrap=True)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_errors.py::test_max_headers_limit[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61658)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_GET[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61660)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_DELETE[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61661)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_PUT[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61662)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_POST_JSON_data[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61663)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_POST_form[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61664)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_POST_form_multiple_values[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61665)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_POST_raw[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61666)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_POST_stdin[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61667)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_POST_file[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=22, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61668)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_unset[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=22, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61670)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_unset[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:442: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/fl/3_wfz5td61943_0_wf9ww6vw0000gn/T/httpie_stderrfp131wvi' mode='w+t' encoding='utf-8'>
+    result = tuple_new(cls, iterable)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_unset[https]
+tests/test_sessions.py::TestSession::test_session_by_path
+tests/test_uploads.py::TestRequestBodyFromFilePath::test_request_body_from_file_by_path_with_explicit_content_type
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:442: ResourceWarning: unclosed file <_io.FileIO name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.txt' mode='rb' closefd=True>
+    result = tuple_new(cls, iterable)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_unset[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61671)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_empty_value[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61672)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_empty_value[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61673)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_omit[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61674)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_omit[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61675)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_same_after_omit[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61676)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_fully_omit[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61677)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_values[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61678)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_values_repeated[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61679)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_values_with_empty[https-headers0-,bar]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61680)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_values_with_empty[https-headers1-bar,]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61681)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_values_with_empty[https-headers2-bar,,baz]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61682)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_multiple_values_mixed[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61683)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_headers_preserve_prepared_headers[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61684)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_json_input_preserve_order[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=20, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61685)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_run_template[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=21, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61686)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_json.py::test_nested_json_sparse_array[https]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=19, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61687)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_binary.py::TestBinaryResponseData::test_binary_suppresses_when_terminal
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:451: ResourceWarning: unclosed file <_io.FileIO name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.bin' mode='rb' closefd=True>
+    result = self._make(_map(kwds.pop, field_names, self))
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_binary.py::TestBinaryResponseData::test_binary_suppresses_when_terminal
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:159: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.bin'>
+    self.args, no_options = super().parse_known_args(args, namespace)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cli.py::TestSchemes::test_default_scheme_option
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=30, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61709)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cli.py::TestSchemes::test_scheme_when_invoked_as_https
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=30, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 61710)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie.py::TestIntegration::test_cookie_parser
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/tests/test_cookie.py:19: DeprecationWarning: setDaemon() is deprecated, set the daemon attribute instead
+    self.mock_server_thread.setDaemon(True)
+
+tests/test_cookie_on_redirects.py::test_explicit_user_set_cookie[remote_httpbin]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61720), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_explicit_user_set_cookie_in_session[remote_httpbin]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61724), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_user_set_cookie_in_session[remote_httpbin]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61730), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_explicit_user_set_headers[True-remote_httpbin]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61734), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_explicit_user_set_headers[False-remote_httpbin]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61738), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_server_set_cookie_on_redirect_different_domain[True]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=27, family=2, type=1, proto=0, laddr=('127.0.0.1', 61743)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_server_set_cookie_on_redirect_different_domain[False]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=27, family=2, type=1, proto=0, laddr=('127.0.0.1', 61746)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookies_on_different_domain
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61752), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookies_on_redirect[httpbin-remote_httpbin-remote_httpbin-False]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61757), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookies_on_redirect[httpbin-httpbin-remote_httpbin-False]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61760), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookies_on_redirect[httpbin-remote_httpbin-httpbin-True]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61762), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookie_pool
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61766), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookie_pool
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61768), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_cookie_on_redirects.py::test_saved_session_cookie_pool
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=6, laddr=('192.168.1.69', 61770), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_downloads.py::TestDownloads::test_download_with_redirect_original_url_used_for_filename
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed file <_io.FileIO name='1.json' mode='ab+' closefd=True>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_encoding.py::test_terminal_output_response_charset_detection[big5-\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996\u5377\u9996]
+  <frozen importlib._bootstrap>:110: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/fl/3_wfz5td61943_0_wf9ww6vw0000gn/T/httpie_stderrb10ik2go' mode='w+t' encoding='utf-8'>
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_encoding.py: 12 warnings
+tests/test_stream.py: 8 warnings
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/responses/__init__.py:547: DeprecationWarning: stream argument is deprecated. Use stream parameter in request directly
+    warn(
+
+tests/test_httpie.py::test_response_headers_multiple
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('127.0.0.1', 61817), raddr=('127.0.0.1', 61816)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=27, family=2, type=1, proto=0, laddr=('127.0.0.1', 61816)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple_repeated
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('127.0.0.1', 61819), raddr=('127.0.0.1', 61818)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple_repeated
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=27, family=2, type=1, proto=0, laddr=('127.0.0.1', 61818)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple_representation[format]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('127.0.0.1', 61821), raddr=('127.0.0.1', 61820)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple_representation[format]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=27, family=2, type=1, proto=0, laddr=('127.0.0.1', 61820)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple_representation[none]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('127.0.0.1', 61823), raddr=('127.0.0.1', 61822)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_httpie.py::test_response_headers_multiple_representation[none]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=27, family=2, type=1, proto=0, laddr=('127.0.0.1', 61822)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_json.py::test_duplicate_keys_support_from_input_file
+tests/test_json.py::test_simple_json_arguments_with_non_json[1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:159: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test_with_dupe_keys.json'>
+    self.args, no_options = super().parse_known_args(args, namespace)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet[quiet_flags1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=32 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet[quiet_flags2]
+tests/test_output.py::TestQuietFlag::test_quiet_with_password_prompt[quiet_flags1]
+tests/test_output.py::TestQuietFlag::test_quiet_with_output_redirection[False-quiet_flags1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=34 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet[quiet_flags3]
+tests/test_output.py::TestQuietFlag::test_quiet_with_password_prompt[quiet_flags2]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-h-quiet_flags1]
+tests/test_output.py::TestQuietFlag::test_quiet_with_output_redirection[False-quiet_flags2]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=35 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py: 10 warnings
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=27 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_check_status_non_zero
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/fl/3_wfz5td61943_0_wf9ww6vw0000gn/T/httpie_stderr9xa4scui' mode='w+t' encoding='utf-8'>
+    return compile(source, filename, mode, flags,
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_check_status_non_zero_pipe
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=33 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_quiet_with_check_status_non_zero_pipe
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=28 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_on_python_warnings[flags0-1]
+tests/test_output.py::TestQuietFlag::test_quiet_on_python_warnings[flags1-1]
+tests/test_output.py::TestQuietFlag::test_quiet_on_python_warnings[flags2-0]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:1369: PytestRemovedIn8Warning: Passing None has been deprecated.
+  See https://docs.pytest.org/en/latest/how-to/capture-warnings.html#additional-use-cases-of-warnings-in-tests for alternatives in common use cases.
+    return func(*newargs, **newkeywargs)
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_password_prompt[quiet_flags3]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-h-quiet_flags2]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-b-quiet_flags1]
+tests/test_output.py::TestQuietFlag::test_quiet_with_output_redirection[False-quiet_flags3]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=36 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-h-quiet_flags3]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-b-quiet_flags2]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-v-quiet_flags1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=37 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-b-quiet_flags3]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-v-quiet_flags2]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-p=hH-quiet_flags1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=38 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-v-quiet_flags3]
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-p=hH-quiet_flags2]
+tests/test_output.py::TestQuietFlag::test_quiet_with_output_redirection[True-quiet_flags1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=39 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_explicit_output_options[-p=hH-quiet_flags3]
+tests/test_output.py::TestQuietFlag::test_quiet_with_output_redirection[True-quiet_flags2]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=40 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::TestQuietFlag::test_quiet_with_output_redirection[True-quiet_flags3]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/cli/argparser.py:157: ResourceWarning: unclosed file <_io.TextIOWrapper name=41 mode='w+t' encoding='utf-8'>
+    self.env = env
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[-auto]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61924)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[-pie]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61926)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[-pie-dark]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61928)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[-pie-light]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61930)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[-solarized]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61932)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ -auto]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61934)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ -pie]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61936)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ -pie-dark]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61938)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ -pie-light]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61940)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ -solarized]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61942)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK-auto]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61944)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK-pie]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61946)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK-pie-dark]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61948)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK-pie-light]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61950)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK-solarized]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61952)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK -auto]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61954)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK -pie]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61956)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK -pie-dark]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61958)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK -pie-light]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61960)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ OK -solarized]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61962)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ CUSTOM -auto]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61964)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ CUSTOM -pie]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61966)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ CUSTOM -pie-dark]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61968)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ CUSTOM -pie-light]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61970)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_output.py::test_ensure_status_code_is_shown_on_all_themes[ CUSTOM -solarized]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=14, family=2, type=1, proto=0, laddr=('127.0.0.1', 61972)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_redirects.py::test_follow_output_options_used_for_redirects
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name=32 mode='w+t' encoding='utf-8'>
+    return compile(source, filename, mode, flags,
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_redirects.py::test_follow_output_options_used_for_redirects
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/fl/3_wfz5td61943_0_wf9ww6vw0000gn/T/httpie_stderrzmlaunlx' mode='w+t' encoding='utf-8'>
+    return compile(source, filename, mode, flags,
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_redirects.py::test_follow_output_options_used_for_redirects
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py:50: ResourceWarning: unclosed file <_io.TextIOWrapper name='/var/folders/fl/3_wfz5td61943_0_wf9ww6vw0000gn/T/httpie_stderr6hbovxpj' mode='w+t' encoding='utf-8'>
+    return compile(source, filename, mode, flags,
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_sessions.py::TestSession::test_download_in_session
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed file <_io.FileIO name='get.json' mode='ab+' closefd=True>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_sessions.py::TestSession::test_auth_type_reused_in_session[False-False]
+tests/test_sessions.py::TestSession::test_auth_type_reused_in_session[False-False]
+tests/test_sessions.py::TestSession::test_auth_type_reused_in_session[False-False]
+tests/test_sessions.py::TestSession::test_auth_type_reused_in_session[False-False]
+tests/test_xml.py::test_invalid_xml[file4]
+tests/test_xml.py::test_invalid_xml[file4]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:442: ResourceWarning: unclosed file <_io.BufferedReader name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.txt'>
+    result = tuple_new(cls, iterable)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_sessions.py::TestSession::test_auth_type_reused_in_session[False-False]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:442: ResourceWarning: unclosed file <_io.FileIO name='/var/folders/fl/3_wfz5td61943_0_wf9ww6vw0000gn/T/httpie_stderrt0l6p9x7' mode='rb+' closefd=True>
+    result = tuple_new(cls, iterable)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_sessions.py::test_secure_cookies_on_localhost[localhost_http_server-expected_cookies0]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=31, family=2, type=1, proto=0, laddr=('127.0.0.1', 62112)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_sessions.py::test_secure_cookies_on_localhost[remote_httpbin-expected_cookies1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=34, family=2, type=1, proto=6, laddr=('192.168.1.69', 62115), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_sessions.py::test_secure_cookies_on_localhost[remote_httpbin-expected_cookies1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=34, family=2, type=1, proto=6, laddr=('192.168.1.69', 62116), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::test_ssl_version[ssl2.3]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=34, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62117)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::test_ssl_version[tls1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/urllib3/util/ssl_.py:290: DeprecationWarning: ssl.PROTOCOL_TLSv1 is deprecated
+    context = SSLContext(ssl_version)
+
+tests/test_ssl.py::test_ssl_version[tls1.1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/urllib3/util/ssl_.py:290: DeprecationWarning: ssl.PROTOCOL_TLSv1_1 is deprecated
+    context = SSLContext(ssl_version)
+
+tests/test_ssl.py::test_ssl_version[tls1.2]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/urllib3/util/ssl_.py:290: DeprecationWarning: ssl.PROTOCOL_TLSv1_2 is deprecated
+    context = SSLContext(ssl_version)
+
+tests/test_ssl.py::TestClientCert::test_cert_and_key
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=34, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62121)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::TestClientCert::test_cert_pem
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=34, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62122)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::TestServerCert::test_verify_no_OK
+tests/test_ssl.py::TestServerCert::test_verify_false_OK[false]
+tests/test_ssl.py::TestServerCert::test_verify_false_OK[fALse]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/urllib3/connectionpool.py:1045: InsecureRequestWarning: Unverified HTTPS request is being made to host '127.0.0.1'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html#ssl-warnings
+    warnings.warn(
+
+tests/test_ssl.py::TestServerCert::test_verify_no_OK
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=33, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62125)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::TestServerCert::test_verify_false_OK[false]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=33, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62126)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::TestServerCert::test_verify_false_OK[fALse]
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=33, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62127)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::TestServerCert::test_verify_custom_ca_bundle_path
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=34, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62128)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::test_ciphers
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=33, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62131)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::test_password_protected_cert_prompt
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=33, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62132)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_ssl.py::test_password_protected_cert_cli_arg
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socketserver.py:348: ResourceWarning: unclosed <ssl.SSLSocket fd=34, family=2, type=1, proto=0, laddr=('127.0.0.1', 61585), raddr=('127.0.0.1', 62134)>
+    self.finish_request(request, client_address)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_stream.py::test_auto_streaming[extras0-3]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=28, family=2, type=1, proto=0, laddr=('127.0.0.1', 62140)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_stream.py::test_auto_streaming[extras1-3]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=28, family=2, type=1, proto=0, laddr=('127.0.0.1', 62142)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_stream.py::test_auto_streaming[extras2-1]
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=28, family=2, type=1, proto=0, laddr=('127.0.0.1', 62144)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_stream.py::test_streaming_encoding_detection
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/venv/lib/python3.11/site-packages/_pytest/fixtures.py:917: ResourceWarning: unclosed <socket.socket fd=28, family=2, type=1, proto=0, laddr=('127.0.0.1', 62146)>
+    next(it)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_tokens.py::test_verbose_chunked
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('192.168.1.69', 62155), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_uploads.py::test_chunked_form
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('192.168.1.69', 62167), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_uploads.py::test_chunked_raw
+  /Users/editflores/editf-github/dd2480/DD2480-httpie/httpie/core.py:138: ResourceWarning: unclosed <socket.socket fd=32, family=2, type=1, proto=6, laddr=('192.168.1.69', 62170), raddr=('188.114.97.1', 80)>
+    exit_status = main_program(
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/test_uploads.py::TestMultipartFormDataFileUpload::test_multipart
+  /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/collections/__init__.py:451: ResourceWarning: unclosed file <_io.FileIO name='/Users/editflores/editf-github/dd2480/DD2480-httpie/tests/fixtures/test.txt' mode='rb' closefd=True>
+    result = self._make(_map(kwds.pop, field_names, self))
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_cli.py::test_url_colon_slash_slash_only - AssertionError: a...
+FAILED tests/test_output.py::TestQuietFlag::test_quiet_with_check_status_non_zero
+FAILED tests/test_output.py::TestQuietFlag::test_quiet_with_check_status_non_zero_pipe
+FAILED tests/test_output.py::TestQuietFlag::test_quiet_quiet_with_check_status_non_zero_pipe
+FAILED tests/test_sessions.py::TestCookieStorage::test_existing_and_new_cookies_sent_in_request[new=bar;chocolate=milk-new_cookies_dict1-chocolate=milk; cookie1=foo; cookie2=foo; new=bar]
+FAILED tests/test_sessions.py::TestCookieStorage::test_existing_and_new_cookies_sent_in_request[new=bar; chocolate=milk-new_cookies_dict2-chocolate=milk; cookie1=foo; cookie2=foo; new=bar]
+FAILED tests/test_sessions.py::TestCookieStorage::test_existing_and_new_cookies_sent_in_request[new=bar; chocolate=milk;;;-new_cookies_dict4-chocolate=milk; cookie1=foo; cookie2=foo; new=bar]
+= 7 failed, 1031 passed, 6 skipped, 3 xfailed, 1 xpassed, 355 warnings in 114.39s (0:01:54) =
