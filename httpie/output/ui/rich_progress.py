@@ -105,7 +105,7 @@ class ProgressDisplay(BaseDisplay):
             TimeRemainingColumn,
             TransferSpeedColumn,
         )
-
+        self.resumed_at = at
         assert total is not None
         self.console.print(f'[progress.description]{description}')
         self.progress_bar = Progress(
@@ -136,6 +136,6 @@ class ProgressDisplay(BaseDisplay):
             [task] = self.progress_bar.tasks
             self._print_summary(
                 is_finished=task.finished,
-                observed_steps=task.completed,
+                observed_steps=task.completed - self.resumed_at,
                 time_spent=time_spent,
             )
